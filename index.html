@@ -1172,10 +1172,10 @@
     const smStatus   = document.getElementById('sm-status');
 
     smWaBtn.addEventListener('click', () => {
-        if (smCurrent) openWa(`¡Hola Huerto Nativo! 🌱 Me interesa el ${smCurrent.name} (${smCurrent.sci}), ${clp(smCurrent.price)} c/u. ¿Me cuentan sobre disponibilidad para un pack de reforestación?`);
+        if (smCurrent) openWa(`¡Hola Huerto Nativo! Me interesa el ${smCurrent.name} (${smCurrent.sci}), ${clp(smCurrent.price)} c/u. ¿Me cuentan sobre disponibilidad para un pack de reforestación?`);
     });
     smWaAviso.addEventListener('click', () => {
-        if (smCurrent) openWa(`¡Hola Huerto Nativo! 🌱 Me interesa el *${smCurrent.name}* (${smCurrent.sci}). Vi que está por germinar — ¿podrían avisarme cuando esté disponible?`);
+        if (smCurrent) openWa(`¡Hola Huerto Nativo! Me interesa el *${smCurrent.name}* (${smCurrent.sci}). Vi que está por germinar — ¿podrían avisarme cuando esté disponible?`);
     });
 
     /* Actualizar visibilidad del bloque de stock en el modal */
@@ -1368,7 +1368,7 @@
     document.getElementById('tm-wa').addEventListener('click', () => {
         if (!tmCurrentId) return;
         const t = TARROS[tmCurrentId];
-        openWa(`¡Hola Huerto Nativo! 🌱 Me interesa el *${t.name}* (${clp(t.price)}). ¿Me cuentan más?`);
+        openWa(`¡Hola Huerto Nativo! Me interesa el *${t.name}* (${clp(t.price)}). ¿Me cuentan más?`);
     });
 
     /* Formulario de Asesoría Técnica → WhatsApp */
@@ -1382,14 +1382,14 @@
         const sup    = document.getElementById('as-superficie').value.trim();
         const unidad = document.getElementById('as-unidad').value;
         const detalle = document.getElementById('as-detalle').value.trim();
-        const msg = `🌳 *Solicitud de Asesoría Técnica — Restauración Ecológica*\n\n`
+        const msg = `*Solicitud de Asesoría Técnica — Restauración Ecológica*\n\n`
             + `Nombre: ${nombre}\n`
             + `Predio: ${comuna}, ${region}\n`
             + `Superficie aproximada: ${sup} ${unidad}\n`
             + (detalle ? `Detalle: ${detalle}\n` : '')
             + `\nSolicito una asesoría técnica personalizada. ¿Cómo continuamos?`;
         openWa(msg);
-        asesoriaFeedback.textContent = 'Te estamos redirigiendo a WhatsApp… 🌿';
+        asesoriaFeedback.textContent = 'Te estamos redirigiendo a WhatsApp…';
         asesoriaFeedback.classList.remove('hidden');
         asesoriaForm.reset();
         clearTimeout(asesoriaFeedbackTimer);
@@ -1399,7 +1399,7 @@
 
     /* Botón flotante de WhatsApp */
     const waFloat = document.getElementById('wa-float');
-    if (waFloat) waFloat.href = waLink('¡Hola Huerto Nativo! 🌱 Me gustaría recibir más información.');
+    if (waFloat) waFloat.href = waLink('¡Hola Huerto Nativo! Me gustaría recibir más información.');
 
     /* ---- Modal de Proyectos ---- */
     const PROYECTOS = [
@@ -1741,7 +1741,7 @@
             Object.keys(TARROS).forEach(id => {
                 if (cart.tarros[id] > 0) lt.push(`• ${cart.tarros[id]}× ${TARROS[id].name} — ${clp(TARROS[id].price)} c/u = ${clp(cart.tarros[id] * TARROS[id].price)}`);
             });
-            bloques.push(`🪴 *Tarro Nativo*\n${lt.join('\n')}`);
+            bloques.push(`*Tarro Nativo*\n${lt.join('\n')}`);
         }
         const tQty = treesTotalQty();
         if (tQty > 0) {
@@ -1749,13 +1749,13 @@
                 const t = cart.trees[name];
                 return `• ${t.qty}× ${name} — ${clp(t.price)} c/u = ${clp(t.qty * t.price)}`;
             });
-            bloques.push(`🌳 *Árboles de reforestación* (${tQty / 5} pack${tQty / 5 > 1 ? 's' : ''} de 5 · ${tQty} árboles)\n${la.join('\n')}`);
+            bloques.push(`*Árboles de reforestación* (${tQty / 5} pack${tQty / 5 > 1 ? 's' : ''} de 5 · ${tQty} árboles)\n${la.join('\n')}`);
         }
-        const msg = `¡Hola Huerto Nativo! 🌱 Quiero hacer este pedido:\n\n`
+        const msg = `¡Hola Huerto Nativo! Quiero hacer este pedido:\n\n`
             + `${bloques.join('\n\n')}\n\n`
-            + `📍 *Dirección de envío:*\n${direccion}\n\n`
-            + `💰 *Total productos: ${clp(cartTotalPrice())}* (sin envío)\n\n`
-            + `¿Me confirman disponibilidad y me calculan el costo de envío a esa dirección para cerrar el total? 🙌`;
+            + `*Dirección de envío:*\n${direccion}\n\n`
+            + `*Total productos: ${clp(cartTotalPrice())}* (sin envío)\n\n`
+            + `¿Me confirman disponibilidad y me calculan el costo de envío a esa dirección para cerrar el total?`;
         openWa(msg);
     });
 
