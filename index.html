@@ -875,7 +875,7 @@
 </div>
 <!-- Botón disponible -->
 <button id="sm-wa" type="button" class="w-full flex items-center justify-center gap-2 bg-tarro-nativo text-on-primary py-3 rounded font-label-caps text-label-caps hover:bg-surface-tint transition-colors">
-  <span class="material-symbols-outlined text-base">chat</span>Consultar por WhatsApp
+  <span class="material-symbols-outlined text-base">forest</span>Armar mi pack
 </button>
 <!-- Botón en crecimiento (reemplaza al anterior) -->
 <button id="sm-wa-aviso" type="button" class="hidden w-full flex items-center justify-center gap-2 bg-amber-500 text-white py-3 rounded font-label-caps text-label-caps hover:bg-amber-600 transition-colors">
@@ -912,9 +912,6 @@
 </div>
 <button id="tm-add" type="button" class="w-full flex items-center justify-center gap-2 bg-tarro-nativo text-on-primary py-3 rounded font-label-caps text-label-caps hover:bg-surface-tint transition-colors">
 <span class="material-symbols-outlined text-base">add_shopping_cart</span>Agregar al carrito
-</button>
-<button id="tm-wa" type="button" class="w-full flex items-center justify-center gap-2 bg-surface-container-high text-tarro-nativo py-3 rounded font-label-caps text-label-caps hover:bg-surface-container transition-colors">
-<span class="material-symbols-outlined text-base">chat</span>Consultar por WhatsApp
 </button>
 </div>
 </div>
@@ -1172,7 +1169,10 @@
     const smStatus   = document.getElementById('sm-status');
 
     smWaBtn.addEventListener('click', () => {
-        if (smCurrent) openWa(`¡Hola Huerto Nativo! Me interesa el ${smCurrent.name} (${smCurrent.sci}), ${clp(smCurrent.price)} c/u. Me gustaría saber [cuántos necesito para mi terreno o si crece bien en mi zona]. ¿Me orientan?`);
+        // Las especies se compran en packs de 5 desde el armador: llevamos al usuario allí
+        closeSpeciesModal();
+        const sec = document.getElementById('reforestacion');
+        if (sec) setTimeout(() => sec.scrollIntoView({ behavior: 'smooth' }), 320);
     });
     smWaAviso.addEventListener('click', () => {
         if (smCurrent) openWa(`¡Hola Huerto Nativo! Me interesa el *${smCurrent.name}* (${smCurrent.sci}). Vi que está por germinar — ¿podrían avisarme cuando esté disponible?`);
@@ -1362,13 +1362,9 @@
         if (!tmCurrentId) return;
         cart.tarros[tmCurrentId]++;
         saveCart(); updateCartBadge();
-        showToast(TARROS[tmCurrentId].name + ' agregado al carrito');
+        // Agrega el tarro y abre el carrito para finalizar la compra
         closeTarroModal();
-    });
-    document.getElementById('tm-wa').addEventListener('click', () => {
-        if (!tmCurrentId) return;
-        const t = TARROS[tmCurrentId];
-        openWa(`¡Hola Huerto Nativo! Me interesa el *${t.name}* (${clp(t.price)}). Me gustaría saber [cómo es el cuidado o si sirve para regalo]. ¿Me cuentan?`);
+        setTimeout(() => openCart(), 320);
     });
 
     /* Formulario de Asesoría Técnica → WhatsApp */
