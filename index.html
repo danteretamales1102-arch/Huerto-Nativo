@@ -1172,7 +1172,7 @@
     const smStatus   = document.getElementById('sm-status');
 
     smWaBtn.addEventListener('click', () => {
-        if (smCurrent) openWa(`¡Hola Huerto Nativo! Me interesa el ${smCurrent.name} (${smCurrent.sci}), ${clp(smCurrent.price)} c/u. ¿Me cuentan sobre disponibilidad para un pack de reforestación?`);
+        if (smCurrent) openWa(`¡Hola Huerto Nativo! Me interesa el ${smCurrent.name} (${smCurrent.sci}), ${clp(smCurrent.price)} c/u. Me gustaría saber [cuántos necesito para mi terreno o si crece bien en mi zona]. ¿Me orientan?`);
     });
     smWaAviso.addEventListener('click', () => {
         if (smCurrent) openWa(`¡Hola Huerto Nativo! Me interesa el *${smCurrent.name}* (${smCurrent.sci}). Vi que está por germinar — ¿podrían avisarme cuando esté disponible?`);
@@ -1368,7 +1368,7 @@
     document.getElementById('tm-wa').addEventListener('click', () => {
         if (!tmCurrentId) return;
         const t = TARROS[tmCurrentId];
-        openWa(`¡Hola Huerto Nativo! Me interesa el *${t.name}* (${clp(t.price)}). ¿Me cuentan más?`);
+        openWa(`¡Hola Huerto Nativo! Me interesa el *${t.name}* (${clp(t.price)}). Me gustaría saber [cómo es el cuidado o si sirve para regalo]. ¿Me cuentan?`);
     });
 
     /* Formulario de Asesoría Técnica → WhatsApp */
