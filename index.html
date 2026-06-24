@@ -327,7 +327,7 @@
 <span class="material-symbols-outlined text-[27px]">shopping_cart</span>
 <span id="cart-badge" class="hidden absolute -top-1.5 -right-2 min-w-[18px] h-[18px] px-1 rounded-full bg-reforestacion-pack text-white text-[11px] font-bold items-center justify-center leading-none">0</span>
 </button>
-<a href="#tarro-nativo" class="hidden lg:block bg-tarro-nativo px-6 py-3 rounded font-label-caps text-label-caps text-on-primary hover:bg-surface-tint transition-colors">Comprar</a>
+<button type="button" id="nav-comprar" class="hidden lg:block bg-tarro-nativo px-6 py-3 rounded font-label-caps text-label-caps text-on-primary hover:bg-surface-tint transition-colors">Comprar</button>
 <button id="mobile-menu-btn" aria-label="Abrir menú" aria-expanded="false" aria-controls="mobile-menu" class="lg:hidden text-tarro-nativo">
 <span id="mobile-menu-icon" class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">menu</span>
 </button>
@@ -339,7 +339,7 @@
 <li><a class="block py-3 text-on-surface-variant hover:text-reforestacion-pack" href="#especies">Especies</a></li>
 <li><a class="block py-3 text-on-surface-variant hover:text-reforestacion-pack" href="#proyectos">Proyectos</a></li>
 <li><a class="block py-3 text-on-surface-variant hover:text-reforestacion-pack" href="#asesoria">Asesoría</a></li>
-<li><a class="block mt-2 bg-tarro-nativo text-on-primary text-center py-3 rounded" href="#tarro-nativo">Comprar</a></li>
+<li><button type="button" id="nav-comprar-mobile" class="block w-full mt-2 bg-tarro-nativo text-on-primary text-center py-3 rounded">Comprar</button></li>
 </ul>
 </nav>
 
@@ -1686,6 +1686,11 @@
     }
 
     document.getElementById('cart-btn').addEventListener('click', openCart);
+    // Botón "Comprar" del nav → abre el carrito para finalizar la compra
+    const navComprar = document.getElementById('nav-comprar');
+    if (navComprar) navComprar.addEventListener('click', openCart);
+    const navComprarMobile = document.getElementById('nav-comprar-mobile');
+    if (navComprarMobile) navComprarMobile.addEventListener('click', () => { setMenu(false); openCart(); });
     document.getElementById('cart-close').addEventListener('click', closeCart);
     cartBackdrop.addEventListener('click', closeCart);
     document.addEventListener('keydown', (e) => {
