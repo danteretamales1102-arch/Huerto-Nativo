@@ -777,7 +777,7 @@
 <p class="font-body-lg text-body-lg text-surface-bright/90 max-w-xl mx-auto">Lo que plantes hoy seguirá aquí dentro de cien años.</p>
 <div class="pt-2 flex flex-col sm:flex-row gap-4 justify-center">
 <a href="#reforestacion" class="inline-block bg-solar-accent text-tarro-nativo px-8 py-4 rounded font-label-caps text-label-caps hover:bg-surface-bright transition-colors shadow-lg">Armar mi pack nativo</a>
-<a href="https://wa.me/56941841757" target="_blank" rel="noopener noreferrer" class="inline-block bg-surface-bright/10 border border-surface-bright/40 text-surface-bright px-8 py-4 rounded font-label-caps text-label-caps hover:bg-surface-bright hover:text-tarro-nativo transition-colors">Hablar con nosotros</a>
+<a id="cta-wa" href="https://wa.me/56941841757" target="_blank" rel="noopener noreferrer" class="inline-block bg-surface-bright/10 border border-surface-bright/40 text-surface-bright px-8 py-4 rounded font-label-caps text-label-caps hover:bg-surface-bright hover:text-tarro-nativo transition-colors">Hablar con nosotros</a>
 </div>
 </div>
 </section>
@@ -792,7 +792,7 @@
 <span class="font-display text-headline-md font-bold text-tarro-nativo">Huerto Nativo</span>
 </div>
 <p class="font-body-md text-on-surface-variant max-w-sm mb-6">© 2026 Huerto Nativo. Compromiso con la biodiversidad chilena. El renacer de nuestra tierra comienza aquí.</p>
-<a href="https://wa.me/56941841757" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 text-on-surface-variant hover:text-reforestacion-pack font-body-md transition-colors">
+<a id="footer-wa" href="https://wa.me/56941841757" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 text-on-surface-variant hover:text-reforestacion-pack font-body-md transition-colors">
 <span class="material-symbols-outlined text-base">chat</span>+56 9 4184 1757 · WhatsApp
 </a>
 </div>
@@ -1396,6 +1396,11 @@
     /* Botón flotante de WhatsApp */
     const waFloat = document.getElementById('wa-float');
     if (waFloat) waFloat.href = waLink('¡Hola Huerto Nativo! Me gustaría saber qué árboles nativos puedo plantar en [mi comuna o sector]. ¿Qué me recomiendan?');
+    // Enlaces "Hablar con nosotros" (CTA final) y WhatsApp del footer: mensaje genérico de conversación (no atado a especie)
+    ['cta-wa', 'footer-wa'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.href = waLink('¡Hola Huerto Nativo! Me gustaría hacerles una consulta.');
+    });
 
     /* ---- Modal de Proyectos ---- */
     const PROYECTOS = [
