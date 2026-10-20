@@ -179,7 +179,30 @@
 </div>
 </section>
 
-<!-- ============ FORMATO 14x21 Y SUSTRATO (SINTETIZADO Y EQUILIBRADO) ============ -->
+<!-- ============ 1. FRANJA DE IMPACTO (15 ESPECIES) ============ -->
+<section class="bg-tarro-nativo relative overflow-hidden">
+<div class="absolute inset-0 bg-pattern opacity-[0.08]"></div>
+<div class="relative max-w-[1200px] mx-auto px-margin-mobile md:px-margin-desktop py-10 grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+<div>
+<p class="font-display text-display-lg-mobile text-solar-accent"><span id="species-total-counter" data-count="15">0</span></p>
+<p class="font-label-caps text-label-caps text-surface-bright/80 mt-1">Especies nativas</p>
+</div>
+<div>
+<p class="font-display text-display-lg-mobile text-solar-accent"><span data-count="2">0</span></p>
+<p class="font-label-caps text-label-caps text-surface-bright/80 mt-1">Proyectos de restauración</p>
+</div>
+<div>
+<p class="font-display text-display-lg-mobile text-solar-accent"><span data-count="5">0</span></p>
+<p class="font-label-caps text-label-caps text-surface-bright/80 mt-1">Árboles por pack</p>
+</div>
+<div>
+<p class="font-display text-display-lg-mobile text-solar-accent"><span data-count="100">0</span>%</p>
+<p class="font-label-caps text-label-caps text-surface-bright/80 mt-1">Desde semilla</p>
+</div>
+</div>
+</section>
+
+<!-- ============ 2. BLOQUE NUEVO: FORMATO 14x21 Y SUSTRATO (DEBAJO DE FRANJA VERDE Y ARRIBA DE CÓMO COMPRAR) ============ -->
 <section id="calidad" class="max-w-[1200px] mx-auto px-margin-mobile md:px-margin-desktop py-16">
 <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
 <!-- Cuadro de imagen (carga automáticamente especies/bolsa-14x21.jpg cuando la subas) -->
@@ -199,7 +222,7 @@
 </div>
 </div>
 </div>
-<!-- Texto sintetizado y directo al grano -->
+<!-- Texto sintetizado y equilibrado con la altura de la imagen -->
 <div class="lg:col-span-7 space-y-4">
 <div class="inline-flex items-center gap-2 bg-reforestacion-pack/10 text-reforestacion-pack px-3.5 py-1 rounded-full font-label-caps text-label-caps border border-reforestacion-pack/20">
 <span class="material-symbols-outlined text-sm" style="font-variation-settings:'FILL' 1;">check_circle</span>Formato listo para pasar a tierra
@@ -243,31 +266,8 @@
 </div>
 </section>
 
-<!-- ============ FRANJA DE IMPACTO (ACTUALIZADA CON LAS 15 ESPECIES) ============ -->
-<section class="bg-tarro-nativo relative overflow-hidden">
-<div class="absolute inset-0 bg-pattern opacity-[0.08]"></div>
-<div class="relative max-w-[1200px] mx-auto px-margin-mobile md:px-margin-desktop py-10 grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-<div>
-<p class="font-display text-display-lg-mobile text-solar-accent"><span id="species-total-counter" data-count="15">0</span></p>
-<p class="font-label-caps text-label-caps text-surface-bright/80 mt-1">Especies nativas</p>
-</div>
-<div>
-<p class="font-display text-display-lg-mobile text-solar-accent"><span data-count="2">0</span></p>
-<p class="font-label-caps text-label-caps text-surface-bright/80 mt-1">Proyectos de restauración</p>
-</div>
-<div>
-<p class="font-display text-display-lg-mobile text-solar-accent"><span data-count="5">0</span></p>
-<p class="font-label-caps text-label-caps text-surface-bright/80 mt-1">Árboles por pack</p>
-</div>
-<div>
-<p class="font-display text-display-lg-mobile text-solar-accent"><span data-count="100">0</span>%</p>
-<p class="font-label-caps text-label-caps text-surface-bright/80 mt-1">Desde semilla</p>
-</div>
-</div>
-</section>
-
-<!-- ============ CÓMO FUNCIONA ============ -->
-<section class="bg-surface-container-low border-y border-tarro-nativo/5">
+<!-- ============ 3. CÓMO FUNCIONA (PASOS DE COMPRA) ============ -->
+<section class="bg-surface-container-low border-y border-tarro-nativo/10">
 <div class="max-w-[1200px] mx-auto px-margin-mobile md:px-margin-desktop py-12">
 <div class="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-gutter">
 <div class="flex items-start gap-4">
@@ -301,7 +301,7 @@
 </div>
 </section>
 
-<!-- ============ ESPECIES ============ -->
+<!-- ============ 4. ESPECIES ============ -->
 <section class="bg-tarro-nativo py-section-gap relative overflow-hidden" id="especies">
 <div class="absolute inset-0 bg-pattern opacity-[0.08]"></div>
 <div class="max-w-[1200px] mx-auto px-margin-mobile md:px-margin-desktop relative z-10">
@@ -332,7 +332,7 @@
 </div>
 </section>
 
-<!-- ============ REFORESTACIÓN (Pack de 5) ============ -->
+<!-- ============ 5. REFORESTACIÓN (Pack de 5) ============ -->
 <section class="bg-surface-container-low py-section-gap relative" id="reforestacion">
 <div class="absolute inset-0 bg-pattern"></div>
 <div class="max-w-[1200px] mx-auto px-margin-mobile md:px-margin-desktop relative z-10">
@@ -764,7 +764,6 @@
     ];
     const FALLBACK_IMG = 'huerto-nativo-512-transparente.png';
 
-    /* Sincroniza automáticamente el contador de la franja verde con el total de especies */
     const totalCounterEl = document.getElementById('species-total-counter');
     if (totalCounterEl) totalCounterEl.setAttribute('data-count', String(SPECIES.length));
 
