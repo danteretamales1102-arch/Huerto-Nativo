@@ -179,12 +179,12 @@
 </div>
 </section>
 
-<!-- ============ 1. FRANJA DE IMPACTO (15 ESPECIES) ============ -->
+<!-- ============ 1. FRANJA DE IMPACTO ============ -->
 <section class="bg-tarro-nativo relative overflow-hidden">
 <div class="absolute inset-0 bg-pattern opacity-[0.08]"></div>
 <div class="relative max-w-[1200px] mx-auto px-margin-mobile md:px-margin-desktop py-10 grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
 <div>
-<p class="font-display text-display-lg-mobile text-solar-accent"><span id="species-total-counter" data-count="15">0</span></p>
+<p class="font-display text-display-lg-mobile text-solar-accent"><span id="species-total-counter" data-count="17">0</span></p>
 <p class="font-label-caps text-label-caps text-surface-bright/80 mt-1">Especies nativas</p>
 </div>
 <div>
@@ -202,10 +202,9 @@
 </div>
 </section>
 
-<!-- ============ 2. BLOQUE NUEVO: FORMATO 14x21 Y SUSTRATO (DEBAJO DE FRANJA VERDE Y ARRIBA DE CÓMO COMPRAR) ============ -->
+<!-- ============ 2. BLOQUE FORMATO 14x21 Y SUSTRATO ============ -->
 <section id="calidad" class="max-w-[1200px] mx-auto px-margin-mobile md:px-margin-desktop py-16">
 <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
-<!-- Cuadro de imagen (carga automáticamente especies/bolsa-14x21.jpg cuando la subas) -->
 <div class="lg:col-span-5">
 <div class="relative w-full h-[360px] rounded-2xl bg-surface-container-low border-2 border-dashed border-tarro-nativo/20 overflow-hidden flex flex-col items-center justify-center p-6 text-center">
 <img src="especies/bolsa-14x21.jpg" alt="Árbol nativo en bolsa forestal de 14x21 cm listo para pasar a tierra" class="absolute inset-0 w-full h-full object-cover z-10" onload="this.parentElement.classList.remove('border-dashed','border-2'); document.getElementById('bolsa-placeholder').classList.add('hidden');" onerror="this.classList.add('hidden');"/>
@@ -222,7 +221,6 @@
 </div>
 </div>
 </div>
-<!-- Texto sintetizado y equilibrado con la altura de la imagen -->
 <div class="lg:col-span-7 space-y-4">
 <div class="inline-flex items-center gap-2 bg-reforestacion-pack/10 text-reforestacion-pack px-3.5 py-1 rounded-full font-label-caps text-label-caps border border-reforestacion-pack/20">
 <span class="material-symbols-outlined text-sm" style="font-variation-settings:'FILL' 1;">check_circle</span>Formato listo para pasar a tierra
@@ -266,7 +264,7 @@
 </div>
 </section>
 
-<!-- ============ 3. CÓMO FUNCIONA (PASOS DE COMPRA) ============ -->
+<!-- ============ 3. CÓMO FUNCIONA ============ -->
 <section class="bg-surface-container-low border-y border-tarro-nativo/10">
 <div class="max-w-[1200px] mx-auto px-margin-mobile md:px-margin-desktop py-12">
 <div class="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-gutter">
@@ -312,7 +310,6 @@
 </div>
 <div id="species-grid" class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-gutter"></div>
 
-<!-- Acceso a especies por germinar -->
 <div class="mt-10">
 <button id="germinar-toggle" type="button" aria-expanded="false" aria-controls="germinar-panel"
    class="w-full flex items-center justify-between gap-4 bg-amber-50 border border-amber-200 rounded-xl p-5 text-left hover:bg-amber-100/70 transition-colors">
@@ -416,7 +413,7 @@
 </div>
 <div data-proyecto="1" class="bg-surface rounded-2xl overflow-hidden border border-tarro-nativo/10 shadow-sm hover:shadow-md transition-shadow cursor-pointer group">
 <div class="grid grid-cols-2 gap-0.5 h-72">
-<div class="row-span-2 overflow-hidden"><img class="w-full h-full object-cover" src="proyectos/algarrobo-2.jpg" alt="Plantación nativa en Algarrobo" loading="lazy"/></div>
+<div class="overflow-hidden"><img class="w-full h-full object-cover" src="proyectos/algarrobo-2.jpg" alt="Plantación nativa en Algarrobo" loading="lazy"/></div>
 <div class="overflow-hidden"><img class="w-full h-full object-cover" src="proyectos/algarrobo-1.jpg" alt="Plantación nativa en Algarrobo" loading="lazy"/></div>
 <div class="overflow-hidden"><img class="w-full h-full object-cover" src="proyectos/algarrobo-3.jpg" alt="Plantación nativa en Algarrobo" loading="lazy"/></div>
 </div>
@@ -707,18 +704,15 @@
 </div>
 
 <script>
-    /* ============================================================
-       CONFIGURACIÓN — Huerto Nativo
-       Nombres automáticos en la carpeta /especies:
-       - Foto del formato bolsa: especies/bolsa-14x21.jpg
-       - Fotos especies nuevas: especies/murta.jpg, especies/maiten.jpg, especies/quebracho.jpg
-    ============================================================ */
     const WA_PHONE = '56941841757';
 
     const SPECIES = [
         { name: 'Peumo', sci: 'Cryptocarya alba', price: 5500, img: 'especies/peumo.jpg', stock: true,
           agua: 'Medio · tolera sequía moderada', sombra: 'Tolerante · sol a sombra',
           dato: 'Árbol siempreverde de follaje denso y aromático. Sus frutos rojos alimentan a la fauna nativa y es pilar del bosque esclerófilo.' },
+        { name: 'Belloto del Norte', sci: 'Beilschmiedia miersii', price: 8500, img: 'especies/belloto-del-norte.jpg', stock: true, maxStock: 1, badge: '¡Última unidad!',
+          agua: 'Medio · prefiere quebradas frescas', sombra: 'Tolerante · sol a semisombra',
+          dato: 'Monumento Natural de Chile y especie endémica amenazada. Posee hojas relucientes siempreverdes y frutos característicos. ¡Última unidad disponible!' },
         { name: 'Palma chilena', sci: 'Jubaea chilensis', price: 8000, img: 'especies/palma-chilena.jpg', stock: true,
           agua: 'Bajo-medio · rústica y resistente', sombra: 'Semi-tolerante joven · pleno sol adulta',
           dato: 'La palmera más austral del mundo, endémica de Chile y capaz de vivir más de 1.000 años. Especie de alto valor patrimonial.' },
@@ -742,7 +736,10 @@
           dato: 'Arbusto nativo siempreverde que produce bayas rojas intensamente aromáticas y dulces a fines de verano.' },
         { name: 'Quebracho', sci: 'Senna candolleana', price: 5500, img: 'especies/quebracho.jpg', stock: true, maxStock: 1, badge: '¡Última unidad!',
           agua: 'Bajo · resistente a sequía', sombra: 'Heliófita · pleno sol',
-          dato: 'Arbolito nativo de abundante floración amarilla y fijador de nitrógeno. ¡Última unidad lista para entrega inmediata (el resto del lote se encuentra en germinación)!' },
+          dato: 'Arbolito nativo de abundante floración amarilla y fijador de nitrógeno. ¡Última unidad lista para entrega inmediata!' },
+        { name: 'Huingán', sci: 'Schinus polygamus', price: 5000, img: 'especies/huingan.jpg', stock: true, maxStock: 1, badge: '¡Última unidad!',
+          agua: 'Muy bajo · alta resistencia al calor y sequía', sombra: 'Pleno sol',
+          dato: 'Arbusto o arbolito rústico de la zona central, excelente fijador de laderas y melífero. Posee bayas morado-negruzcas. ¡Última unidad disponible!' },
         { name: 'Maqui', sci: 'Aristotelia chilensis', price: 5000, img: 'especies/maqui.jpg', stock: true,
           agua: 'Medio', sombra: 'Especie pionera de rápido crecimiento',
           dato: 'Sus bayas poseen una de las mayores concentraciones de antioxidantes del mundo y atraen gran cantidad de aves nativas.' },
@@ -927,9 +924,7 @@
         smWaAviso.classList.toggle('hidden', !sinStock);
     }
 
-    /* ============================================================
-       CARRITO Y PACK BUILDER CON CONTROL DE STOCK MÁXIMO (maxStock)
-    ============================================================ */
+    /* CARRITO Y PACK BUILDER */
     const CART_KEY = 'hn-cart-v3';
     let cart = { trees: {} };
     try {
@@ -1065,7 +1060,7 @@
         if (el && disp.length) el.textContent = clp(Math.min(...disp) * 5);
     })();
 
-    /* Formulario de Asesoría Técnica */
+    /* Asesoría */
     const asesoriaForm = document.getElementById('asesoria-form');
     const asesoriaFeedback = document.getElementById('asesoria-feedback');
     let asesoriaFeedbackTimer = null;
@@ -1098,7 +1093,7 @@
         if (el) el.href = waLink('¡Hola Huerto Nativo! Me gustaría hacerles una consulta.');
     });
 
-    /* Modal de Proyectos */
+    /* Proyectos */
     const PROYECTOS = [
         {
             lugar: 'Villarrica · La Araucanía',
@@ -1178,7 +1173,7 @@
         });
     });
 
-    /* Reveal-on-scroll */
+    /* Reveal */
     const revealTargets = document.querySelectorAll('main section');
     if ('IntersectionObserver' in window) {
         revealTargets.forEach((el, i) => { if (i > 0) el.classList.add('reveal'); });
@@ -1193,7 +1188,7 @@
         revealTargets.forEach(el => revealObs.observe(el));
     }
 
-    /* Link activo del nav */
+    /* Nav Activo */
     const navLinks = document.querySelectorAll('nav ul a[href^="#"]');
     const sectionsById = {};
     navLinks.forEach(a => {
@@ -1210,14 +1205,14 @@
         Object.values(sectionsById).forEach(sec => navObs.observe(sec));
     }
 
-    /* Botón volver arriba */
+    /* Volver Arriba */
     const backToTop = document.getElementById('back-to-top');
     window.addEventListener('scroll', () => {
         backToTop.classList.toggle('show', window.scrollY > 600);
     }, { passive: true });
     backToTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
 
-    /* Contadores animados */
+    /* Contadores */
     const counters = document.querySelectorAll('[data-count]');
     if ('IntersectionObserver' in window && counters.length) {
         const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -1240,9 +1235,7 @@
         counters.forEach(el => countObs.observe(el));
     }
 
-    /* ============================================================
-       FUNCIONES DEL CARRITO
-    ============================================================ */
+    /* FUNCIONES DEL CARRITO */
     const cartWrap = document.getElementById('cart-wrap');
     const cartPanel = document.getElementById('cart-panel');
     const cartBackdrop = document.getElementById('cart-backdrop');
@@ -1267,7 +1260,6 @@
 
     function cartRowHtml({ key, name, sub, unit, qtyVal, maxStock }) {
         key = escHtml(key); name = escHtml(name);
-        const atMax = maxStock && qtyVal >= maxStock;
         return `
         <div class="py-4 flex items-center justify-between gap-3">
             <div class="min-w-0">
@@ -1278,51 +1270,81 @@
             <div class="flex items-center gap-2 shrink-0">
                 <button type="button" data-cart-act="minus" data-key="${key}" aria-label="Quitar uno" class="w-8 h-8 rounded-full bg-surface-container-high text-tarro-nativo text-lg font-bold leading-none flex items-center justify-center hover:bg-surface-tint hover:text-surface-bright transition-colors">−</button>
                 <span class="w-6 text-center font-semibold text-tarro-nativo">${qtyVal}</span>
-                <button type="button" data-cart-act="plus" data-key="${key}" aria-label="Agregar uno" class="w-8 h-8 rounded-full bg-tarro-nativo text-on-primary text-lg font-bold leading-none flex items-center justify-center hover:bg-reforestacion-pack transition-colors ${atMax ? 'opacity-30 cursor-not-allowed' : ''}">+</button>
-                <button type="button" data-cart-act="remove" data-key="${key}" aria-label="Eliminar del carrito" class="w-8 h-8 rounded-full text-on-surface-variant hover:text-error hover:bg-error/10 flex items-center justify-center transition-colors"><span class="material-symbols-outlined text-base pointer-events-none">delete</span></button>
+                <button type="button" data-cart-act="plus" data-key="${key}" aria-label="Agregar uno" class="w-8 h-8 rounded-full bg-tarro-nativo text-on-primary text-lg font-bold leading-none flex items-center justify-center hover:bg-reforestacion-pack transition-colors">+</button>
             </div>
         </div>`;
     }
 
     function renderCart() {
-        let html = '';
-        const treeKeys = Object.keys(cart.trees);
-        if (treeKeys.length) {
-            const tQty = treesTotalQty();
-            html += `<p class="pt-4 pb-1 font-label-caps text-label-caps text-on-surface-variant">Árboles seleccionados · ${tQty} en total</p>`;
-            treeKeys.forEach(name => {
-                const sp = SPECIES.find(s => s.name === name);
-                html += cartRowHtml({ key: name, name, sub: 'Bolsa forestal 14×21 cm', unit: cart.trees[name].price, qtyVal: cart.trees[name].qty, maxStock: sp && sp.maxStock });
-            });
-        } else {
-            html = `<div class="py-16 text-center space-y-3">
-                <span class="material-symbols-outlined text-5xl text-outline-variant">shopping_cart</span>
-                <p class="font-body-md text-on-surface-variant">Tu carrito está vacío.</p>
-                <p class="text-sm text-on-surface-variant">Arma tu pack de 5 árboles nativos en el catálogo.</p>
+        const names = Object.keys(cart.trees);
+        if (!names.length) {
+            cartItemsEl.innerHTML = `<div class="py-12 text-center text-on-surface-variant space-y-2">
+                <span class="material-symbols-outlined text-4xl text-tarro-nativo/30">shopping_cart</span>
+                <p class="font-body-md">Tu carrito está vacío.</p>
+                <p class="text-xs">Arma tu selección en la sección "Arma tu Pack Nativo".</p>
             </div>`;
+            cartTotalEl.textContent = clp(0);
+            cartHintEl.classList.add('hidden');
+            cartCheckoutBtn.disabled = true;
+            cartCheckoutBtn.classList.add('opacity-50', 'cursor-not-allowed');
+            return;
         }
-        cartItemsEl.innerHTML = html;
-        cartTotalEl.textContent = clp(cartTotalPrice());
 
-        const tQty = treesTotalQty();
-        const invalid = tQty > 0 && (tQty % 5 !== 0);
-        const empty = tQty === 0;
-        if (invalid) {
-            const faltan = 5 - (tQty % 5);
-            cartHintEl.textContent = `Los árboles van en packs de 5: agrega ${faltan} más o quita ${tQty % 5}.`;
+        let html = '';
+        names.forEach(name => {
+            const item = cart.trees[name];
+            const sp = SPECIES.find(s => s.name === name);
+            html += cartRowHtml({
+                key: name, name, sub: sp ? sp.sci : '',
+                unit: item.price, qtyVal: item.qty,
+                maxStock: sp ? sp.maxStock : null
+            });
+        });
+        cartItemsEl.innerHTML = html;
+
+        const totalQty = treesTotalQty();
+        const valid = totalQty > 0 && totalQty % 5 === 0;
+        if (!valid) {
+            const rem = 5 - (totalQty % 5);
+            cartHintEl.textContent = `Los packs se envían de a 5 árboles. Te ${rem === 1 ? 'falta' : 'faltan'} ${rem} árbol${rem > 1 ? 'es' : ''}.`;
+            cartHintEl.classList.remove('hidden');
+            cartCheckoutBtn.disabled = true;
+            cartCheckoutBtn.classList.add('opacity-50', 'cursor-not-allowed');
+        } else {
+            cartHintEl.classList.add('hidden');
+            cartCheckoutBtn.disabled = false;
+            cartCheckoutBtn.classList.remove('opacity-50', 'cursor-not-allowed');
         }
-        cartHintEl.classList.toggle('hidden', !invalid);
-        cartCheckoutBtn.disabled = invalid || empty;
-        cartCheckoutBtn.classList.toggle('opacity-40', invalid || empty);
-        cartCheckoutBtn.classList.toggle('cursor-not-allowed', invalid || empty);
-        updateCartBadge();
-        updatePack();
+
+        cartTotalEl.textContent = clp(cartTotalPrice());
     }
+
+    cartItemsEl.addEventListener('click', (e) => {
+        const btn = e.target.closest('button[data-cart-act]');
+        if (!btn) return;
+        const act = btn.dataset.cartAct;
+        const name = btn.dataset.key;
+        if (!cart.trees[name]) return;
+        const sp = SPECIES.find(s => s.name === name);
+        const max = sp ? (sp.maxStock || 999) : 999;
+
+        if (act === 'plus') {
+            if (cart.trees[name].qty >= max) {
+                showToast(`Máximo disponible de ${name}: ${max} ${max === 1 ? 'unidad' : 'unidades'}`);
+                return;
+            }
+            cart.trees[name].qty++;
+        } else if (act === 'minus') {
+            cart.trees[name].qty--;
+            if (cart.trees[name].qty <= 0) delete cart.trees[name];
+        }
+        saveCart(); updateCartBadge(); updatePack(); renderCart();
+    });
 
     function openCart() {
         renderCart();
-        lockBackground();
         cartWrap.classList.remove('hidden');
+        lockBackground();
         document.body.style.overflow = 'hidden';
         requestAnimationFrame(() => {
             cartBackdrop.classList.remove('opacity-0'); cartBackdrop.classList.add('opacity-100');
@@ -1341,98 +1363,63 @@
         }, 300);
     }
 
-    let toastTimer = null;
-    function showToast(msg) {
-        document.getElementById('cart-toast-msg').textContent = msg;
-        const toast = document.getElementById('cart-toast');
-        toast.classList.remove('opacity-0');
-        clearTimeout(toastTimer);
-        toastTimer = setTimeout(() => toast.classList.add('opacity-0'), 2400);
-    }
-
     document.getElementById('cart-btn').addEventListener('click', openCart);
-    const navComprar = document.getElementById('nav-comprar');
-    if (navComprar) navComprar.addEventListener('click', openCart);
-    const navComprarMobile = document.getElementById('nav-comprar-mobile');
-    if (navComprarMobile) navComprarMobile.addEventListener('click', () => { setMenu(false); openCart(); });
     document.getElementById('cart-close').addEventListener('click', closeCart);
     cartBackdrop.addEventListener('click', closeCart);
     document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape' && !cartWrap.classList.contains('hidden')) closeCart();
     });
 
-    cartItemsEl.addEventListener('click', (e) => {
-        const btn = e.target.closest('button[data-cart-act]');
-        if (!btn) return;
-        const { cartAct, key } = btn.dataset;
-        const item = cart.trees[key];
-        if (!item) return;
-        const sp = SPECIES.find(s => s.name === key);
-        const max = (sp && sp.maxStock) ? sp.maxStock : 999;
-        if (cartAct === 'plus') {
-            if (item.qty >= max) {
-                showToast(`Solo ${max === 1 ? 'existe 1 unidad disponible' : 'existen ' + max + ' unidades disponibles'} de ${key}`);
-                return;
-            }
-            item.qty++;
-        } else if (cartAct === 'minus') {
-            item.qty--;
-        } else {
-            item.qty = 0;
-        }
-        if (item.qty <= 0) delete cart.trees[key];
-        saveCart(); renderCart();
+    document.getElementById('nav-comprar').addEventListener('click', () => {
+        const sec = document.getElementById('reforestacion');
+        if (sec) sec.scrollIntoView({ behavior: 'smooth' });
     });
-
-    const cartAddressEl = document.getElementById('cart-address');
-    const cartAddressHint = document.getElementById('cart-address-hint');
-    cartAddressEl.addEventListener('input', () => {
-        if (cartAddressEl.value.trim()) {
-            cartAddressHint.classList.add('hidden');
-            cartAddressEl.classList.remove('border-error');
-        }
+    document.getElementById('nav-comprar-mobile').addEventListener('click', () => {
+        setMenu(false);
+        const sec = document.getElementById('reforestacion');
+        if (sec) sec.scrollIntoView({ behavior: 'smooth' });
     });
 
     cartCheckoutBtn.addEventListener('click', () => {
-        if (cartCheckoutBtn.disabled) return;
-        const direccion = cartAddressEl.value.trim();
-        if (!direccion) {
-            cartAddressHint.classList.remove('hidden');
-            cartAddressEl.classList.add('border-error');
-            cartAddressEl.focus();
-            return;
-        }
-        cartAddressHint.classList.add('hidden');
-        cartAddressEl.classList.remove('border-error');
+        const addrEl = document.getElementById('cart-address');
+        const addrHint = document.getElementById('cart-address-hint');
+        const address = addrEl ? addrEl.value.trim() : '';
 
-        const tQty = treesTotalQty();
-        const la = Object.keys(cart.trees).map(name => {
-            const t = cart.trees[name];
-            return `• ${t.qty}× ${name} — ${clp(t.price)} c/u = ${clp(t.qty * t.price)}`;
-        });
-        const msg = `¡Hola Huerto Nativo! Quiero hacer este pedido:\n\n`
-            + `*Pack de Reforestación* (${tQty / 5} pack${tQty / 5 > 1 ? 's' : ''} de 5 · ${tQty} árboles)\n${la.join('\n')}\n\n`
-            + `*Dirección de envío:*\n${direccion}\n\n`
-            + `*Total productos: ${clp(cartTotalPrice())}* (más envío Bluexpress)\n\n`
-            + `¿Me confirman disponibilidad y el valor del envío para realizar la transferencia?`;
+        if (!address) {
+            if (addrHint) addrHint.classList.remove('hidden');
+            if (addrEl) addrEl.focus();
+            return;
+        } else if (addrHint) {
+            addrHint.classList.add('hidden');
+        }
+
+        const itemsStr = Object.keys(cart.trees)
+            .map(n => `• ${cart.trees[n].qty}x ${n} (${clp(cart.trees[n].qty * cart.trees[n].price)})`)
+            .join('\n');
+        const totalQty = treesTotalQty();
+        const msg = `*Pedido — Huerto Nativo*\n\n`
+            + `*Detalle del pedido (${totalQty} árboles):*\n${itemsStr}\n\n`
+            + `*Total estimado:* ${clp(cartTotalPrice())}\n`
+            + `*Dirección de envío:* ${address}\n\n`
+            + `Hola, me gustaría confirmar la disponibilidad y el valor total con despacho Bluexpress a esta dirección.`;
+
         openWa(msg);
     });
 
-    document.addEventListener('keydown', (e) => {
-        if (e.key !== 'Tab') return;
-        let panel = null;
-        if (!cartWrap.classList.contains('hidden')) panel = cartPanel;
-        else if (!smModal.classList.contains('hidden')) panel = smPanel;
-        else if (!pmModal.classList.contains('hidden')) panel = pmPanel;
-        if (!panel) return;
-        const f = Array.from(panel.querySelectorAll(
-            'a[href],button:not([disabled]),input:not([disabled]),select:not([disabled]),textarea:not([disabled]),[tabindex]:not([tabindex="-1"])'
-        )).filter(el => el.offsetParent !== null);
-        if (!f.length) return;
-        const first = f[0], last = f[f.length - 1];
-        if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
-        else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
-    });
+    let toastTimer = null;
+    function showToast(msg) {
+        const t = document.getElementById('cart-toast');
+        const tm = document.getElementById('cart-toast-msg');
+        if (!t || !tm) return;
+        tm.textContent = msg;
+        t.classList.remove('opacity-0', 'pointer-events-none');
+        t.classList.add('opacity-100');
+        clearTimeout(toastTimer);
+        toastTimer = setTimeout(() => {
+            t.classList.remove('opacity-100');
+            t.classList.add('opacity-0', 'pointer-events-none');
+        }, 2500);
+    }
 
     updateCartBadge();
     updatePack();
