@@ -20,8 +20,8 @@
 <meta name="twitter:title" content="Huerto Nativo | Árboles nativos de Chile"/>
 <meta name="twitter:description" content="Vivero digital de árboles nativos chilenos: packs de reforestación y asesoría ecológica."/>
 <meta name="twitter:image" content="https://danteretamales1102-arch.github.io/Huerto-Nativo/especies/ocoa-hero.jpg"/>
-<link rel="icon" type="image/png" href="https://danteretamales1102-arch.github.io/Huerto-Nativo/huerto-nativo-512-transparente.png"/>
-<link rel="preload" as="image" href="https://danteretamales1102-arch.github.io/Huerto-Nativo/especies/ocoa-hero.jpg"/>
+<link rel="icon" type="image/png" href="https://raw.githubusercontent.com/danteretamales1102-arch/Huerto-Nativo/main/huerto-nativo-512-transparente.png"/>
+<link rel="preload" as="image" href="https://raw.githubusercontent.com/danteretamales1102-arch/Huerto-Nativo/main/especies/ocoa-hero.jpg"/>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -102,7 +102,45 @@
     }
 </script>
 <style>
+    /* Critical Anti-FOUC & Base Layout (evita destellos sin estilo mientras carga Tailwind) */
+    body { background-color: #fefdf5; color: #08160b; margin: 0; font-family: Inter, system-ui, -apple-system, sans-serif; }
+    .hidden { display: none; }
+    img { max-width: 100%; height: auto; }
+    nav img, footer img { width: 3rem; height: 3rem; object-fit: contain; }
+    #wa-float svg { width: 1.75rem; height: 1.75rem; }
     html { scroll-behavior: smooth; }
+
+    /* Esqueleto de carga (Skeleton Shimmer botánico de bajo consumo) */
+    @keyframes hn-shimmer {
+        0% { background-position: 100% 0; }
+        100% { background-position: -100% 0; }
+    }
+    .img-skeleton {
+        position: relative;
+        background-color: #efeee6;
+        background-image: linear-gradient(105deg, #efeee6 30%, #f8f7f0 50%, #e4e5dc 70%);
+        background-size: 220% 100%;
+        animation: hn-shimmer 1.6s ease-in-out infinite;
+    }
+    .img-skeleton.sk-dark {
+        background-color: #0b2e19;
+        background-image: linear-gradient(105deg, #0b2e19 30%, #16492b 50%, #0b2e19 70%);
+    }
+    .img-skeleton.sk-done {
+        animation: none;
+        background-image: none;
+    }
+    .img-skeleton > img {
+        opacity: 0;
+        transition: opacity 0.35s ease-out, transform 0.5s ease;
+    }
+    .img-skeleton.sk-done > img {
+        opacity: 1;
+    }
+    @media (prefers-reduced-motion: reduce) {
+        .img-skeleton { animation: none; }
+        .img-skeleton > img { opacity: 1; transition: none; }
+    }
     section[id], [id="asesoria"] { scroll-margin-top: 96px; }
     .bg-pattern { background-image: radial-gradient(#004021 0.5px, transparent 0.5px); background-size: 24px 24px; opacity: 0.05; }
     :focus-visible { outline: 2px solid #459118; outline-offset: 2px; }
@@ -115,20 +153,38 @@
     @media (prefers-reduced-motion: reduce) { #mobile-menu.flex { animation: none; } }
     #back-to-top { opacity: 0; pointer-events: none; transform: translateY(8px); transition: opacity 0.3s ease, transform 0.3s ease; }
     #back-to-top.show { opacity: 1; pointer-events: auto; transform: none; }
-    /* Animación Línea de Tiempo de Proyectos */
-    .tl-item { opacity: 0.35; transform: translateY(28px); transition: opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1), transform 0.6s cubic-bezier(0.22, 1, 0.36, 1); }
-    .tl-item.tl-visible { opacity: 1; transform: translateY(0); }
-    .tl-item.tl-current .tl-card { border-color: #459118; box-shadow: 0 18px 32px -14px rgba(0, 64, 33, 0.16), 0 0 0 2px rgba(69, 145, 24, 0.22); }
-    .tl-node { transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), background-color 0.35s ease, color 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease; }
+    /* Efecto sutil de perspectiva (vaivén suave) sobre la imagen del Hero */
+    #hero-img {
+        height: 108%;
+        top: -4%;
+        will-change: transform;
+        transform: translate3d(0, 0, 0);
+        transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    @media (prefers-reduced-motion: reduce) {
+        #hero-img { height: 100%; top: 0; transform: none !important; }
+    }
+
+    /* Animación Línea de Tiempo de Proyectos (optimizada por GPU) */
+    #tl-line-fill { transform-origin: top center; will-change: transform; }
+    .tl-item { opacity: 0.35; transform: translate3d(0, 24px, 0); transition: opacity 0.5s ease-out, transform 0.5s ease-out; }
+    .tl-item.tl-visible { opacity: 1; transform: translate3d(0, 0, 0); }
+    .tl-card { transition: border-color 0.3s ease, box-shadow 0.3s ease; }
+    .tl-item.tl-current .tl-card { border-color: #459118; box-shadow: 0 14px 28px -12px rgba(0, 64, 33, 0.14), 0 0 0 1.5px rgba(69, 145, 24, 0.22); }
+    .tl-node { transition: transform 0.35s ease-out, background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease; }
     .tl-item.tl-passed .tl-node { background-color: #459118; border-color: #fefdf5; color: #ffffff; }
-    .tl-item.tl-current .tl-node { transform: scale(1.12); background-color: #004021; border-color: #459118; color: #f2e503; box-shadow: 0 0 0 6px rgba(69, 145, 24, 0.2), 0 8px 20px rgba(0, 64, 33, 0.28); }
-    .tl-year-pill { transition: all 0.35s ease; }
-    .tl-item.tl-current .tl-year-pill { background-color: #004021; color: #f2e503; box-shadow: 0 4px 12px rgba(0, 64, 33, 0.18); }
-    @keyframes tl-pulse { 0%, 100% { box-shadow: 0 0 0 0 rgba(69, 145, 24, 0.4); } 50% { box-shadow: 0 0 0 10px rgba(69, 145, 24, 0); } }
-    .tl-item.tl-current .tl-node-ring { animation: tl-pulse 2.2s infinite; }
+    .tl-item.tl-current .tl-node { transform: translate(-50%, 0) scale(1.1); background-color: #004021; border-color: #459118; color: #f2e503; }
+    .tl-year-pill { transition: background-color 0.3s ease, color 0.3s ease; }
+    .tl-item.tl-current .tl-year-pill { background-color: #004021; color: #f2e503; }
+    @keyframes tl-pulse-single {
+        0% { box-shadow: 0 0 0 0 rgba(69, 145, 24, 0.55); }
+        70% { box-shadow: 0 0 0 12px rgba(69, 145, 24, 0); }
+        100% { box-shadow: 0 0 0 0 rgba(69, 145, 24, 0); }
+    }
+    .tl-node.tl-pulse-once { animation: tl-pulse-single 0.75s ease-out 1; }
     @media (prefers-reduced-motion: reduce) {
         .tl-item { opacity: 1; transform: none; transition: none; }
-        .tl-item.tl-current .tl-node-ring { animation: none; }
+        .tl-node.tl-pulse-once { animation: none; }
     }
 </style>
 </head>
@@ -138,7 +194,7 @@
 <nav class="bg-background/95 top-0 sticky border-b border-tarro-nativo/10 backdrop-blur-md z-50">
 <div class="flex justify-between items-center max-w-[1200px] mx-auto px-margin-mobile md:px-margin-desktop h-20">
 <a href="#" class="flex items-center gap-3">
-<img src="https://danteretamales1102-arch.github.io/Huerto-Nativo/huerto-nativo-512-transparente.png" alt="Huerto Nativo" class="h-12 w-12 shrink-0 object-contain"/>
+<img src="https://raw.githubusercontent.com/danteretamales1102-arch/Huerto-Nativo/main/huerto-nativo-512-transparente.png" alt="Huerto Nativo" class="h-12 w-12 shrink-0 object-contain"/>
 <span class="font-display text-headline-md font-bold text-tarro-nativo tracking-tight whitespace-nowrap">Huerto Nativo</span>
 </a>
 <ul class="hidden lg:flex gap-6 xl:gap-gutter items-center font-label-caps text-label-caps">
@@ -172,8 +228,8 @@
 <main>
 <!-- ============ HERO ============ -->
 <section class="relative w-full min-h-[700px] flex items-center justify-center px-margin-mobile md:px-margin-desktop py-24 overflow-hidden">
-<div class="absolute inset-0 z-0">
-<img class="w-full h-full object-cover" alt="Bosque nativo de Chile — Ocoa." src="https://danteretamales1102-arch.github.io/Huerto-Nativo/especies/ocoa-hero.jpg" fetchpriority="high"/>
+<div class="absolute inset-0 z-0 img-skeleton sk-dark">
+<img id="hero-img" class="absolute left-0 w-full object-cover" alt="Bosque nativo de Chile — Ocoa." src="https://raw.githubusercontent.com/danteretamales1102-arch/Huerto-Nativo/main/especies/ocoa-hero.jpg" fetchpriority="high"/>
 <div class="absolute inset-0 bg-primary/40 mix-blend-multiply"></div>
 <div class="absolute inset-0 bg-gradient-to-t from-tarro-nativo/75 via-tarro-nativo/35 to-tarro-nativo/45"></div>
 </div>
@@ -181,9 +237,9 @@
 <span class="inline-block bg-surface-bright/15 backdrop-blur-sm border border-surface-bright/30 text-surface-bright px-4 py-1.5 rounded-full font-label-caps text-label-caps">Vivero digital de árboles nativos chilenos</span>
 <h1 class="font-display text-display-lg-mobile md:text-display-lg text-on-primary drop-shadow-lg">El origen de tu próximo <span class="text-solar-accent">proyecto verde</span></h1>
 <p class="font-body-lg text-body-lg text-surface-bright max-w-2xl mx-auto">Árboles y packs nativos cultivados con dedicación para que tus espacios, patios o proyectos de reforestación crezcan fuertes desde el primer día.</p>
-<div class="pt-2 flex flex-col sm:flex-row gap-4 justify-center">
-<a href="#especies" class="inline-block bg-solar-accent text-tarro-nativo px-8 py-4 rounded font-label-caps text-label-caps hover:bg-surface-bright transition-colors shadow-lg">Ver catálogo de plantas y packs</a>
-<a id="hero-wa" href="https://wa.me/56941841757" target="_blank" rel="noopener noreferrer" class="inline-block bg-surface-bright/10 backdrop-blur-sm border border-surface-bright/40 text-surface-bright px-8 py-4 rounded font-label-caps text-label-caps hover:bg-surface-bright hover:text-tarro-nativo transition-colors shadow-lg">¿Tienes dudas sobre qué plantar? Escríbenos</a>
+<div class="pt-2 flex flex-col sm:flex-row items-center gap-4 justify-center">
+<a href="#especies" class="w-full sm:w-auto inline-flex items-center justify-center bg-solar-accent text-tarro-nativo px-8 py-4 rounded font-label-caps text-label-caps hover:bg-surface-bright transition-colors shadow-lg">Ver catálogo de plantas y packs</a>
+<a id="hero-wa" href="https://wa.me/56941841757" target="_blank" rel="noopener noreferrer" class="w-full sm:w-auto inline-flex items-center justify-center bg-surface-bright/10 backdrop-blur-sm border border-surface-bright/40 text-surface-bright px-8 py-4 rounded font-label-caps text-label-caps hover:bg-surface-bright hover:text-tarro-nativo transition-colors shadow-lg">¿Tienes dudas? Escríbenos</a>
 </div>
 <div class="flex flex-wrap justify-center gap-x-6 gap-y-2 pt-2 text-surface-bright/90 font-label-caps text-label-caps">
 <span class="flex items-center gap-1.5"><span class="material-symbols-outlined text-sm text-solar-accent" style="font-variation-settings:'FILL' 1;">local_shipping</span>Envío Bluexpress a todo Chile</span>
@@ -194,31 +250,72 @@
 </section>
 
 <!-- ============ 1. SECCIÓN DE VALOR ============ -->
-<section id="calidad" class="max-w-[1200px] mx-auto px-margin-mobile md:px-margin-desktop py-section-gap">
-<div class="text-center max-w-3xl mx-auto mb-12">
-<h2 class="font-display text-display-lg-mobile md:text-display-lg text-tarro-nativo">¿Por qué nuestros árboles crecen mejor en tu terreno?</h2>
+<section id="calidad" class="max-w-[1200px] mx-auto px-margin-mobile md:px-margin-desktop py-16">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+<!-- Columna visual -->
+<div class="lg:col-span-5">
+<div class="relative h-[380px] rounded-2xl overflow-hidden shadow-md border border-tarro-nativo/10 bg-surface-container-high group img-skeleton">
+<img src="https://raw.githubusercontent.com/danteretamales1102-arch/Huerto-Nativo/main/especies/Plantas%20formato%2014x21.jpg" onerror="resolveProjectImg(this, 'https://raw.githubusercontent.com/danteretamales1102-arch/Huerto-Nativo/main/especies/bolsa-14x21.jpg')" alt="Árboles nativos en bolsa de 14x21 cm listos para plantar" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"/>
+<div class="absolute inset-0 bg-gradient-to-t from-tarro-nativo/80 via-tarro-nativo/15 to-transparent"></div>
+<div class="absolute bottom-4 left-4 right-4 bg-surface/95 backdrop-blur-sm border border-tarro-nativo/10 rounded-xl px-4 py-3 flex items-center justify-between shadow-sm">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-reforestacion-pack text-lg" style="font-variation-settings:'FILL' 1;">verified</span>
+<span class="font-label-caps text-[11px] text-tarro-nativo">Formato de entrega</span>
 </div>
-<div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-gutter">
-<div class="bg-surface-container-low rounded-2xl p-8 border border-tarro-nativo/10 flex flex-col items-start">
-<div class="w-12 h-12 rounded-xl bg-reforestacion-pack/10 border border-reforestacion-pack/20 flex items-center justify-center mb-5">
-<span class="material-symbols-outlined text-reforestacion-pack" style="font-variation-settings:'FILL' 1;">potted_plant</span>
+<span class="font-product-tag text-xs text-reforestacion-pack">Bolsa 14 × 21 cm</span>
 </div>
-<h3 class="font-headline-md text-headline-md text-tarro-nativo mb-3">Raíces fuertes y sanas</h3>
-<p class="font-body-md text-body-md text-on-surface-variant leading-relaxed">Crecidos en el formato ideal (bolsa de 14x21 cm) para que la planta llegue firme, con buen desarrollo de raíz y no sufra al momento del trasplante.</p>
 </div>
-<div class="bg-surface-container-low rounded-2xl p-8 border border-tarro-nativo/10 flex flex-col items-start">
-<div class="w-12 h-12 rounded-xl bg-reforestacion-pack/10 border border-reforestacion-pack/20 flex items-center justify-center mb-5">
-<span class="material-symbols-outlined text-reforestacion-pack" style="font-variation-settings:'FILL' 1;">eco</span>
 </div>
-<h3 class="font-headline-md text-headline-md text-tarro-nativo mb-3">Tierra y nutrientes listos</h3>
-<p class="font-body-md text-body-md text-on-surface-variant leading-relaxed">Usamos una mezcla de sustrato equilibrada que retiene la humedad justa y le entrega a la planta el alimento necesario para afirmarse rápido en tu tierra.</p>
+
+<!-- Columna de pilares breves y visuales -->
+<div class="lg:col-span-7 space-y-6">
+<div>
+<span class="inline-flex items-center gap-1.5 bg-reforestacion-pack/10 text-reforestacion-pack px-3.5 py-1 rounded-full font-label-caps text-label-caps border border-reforestacion-pack/20 mb-2">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings:'FILL' 1;">psychiatry</span>Listos para pasar a tierra
+</span>
+<h2 class="font-display text-display-lg-mobile text-tarro-nativo leading-tight">¿Por qué nuestros árboles crecen mejor en tu terreno?</h2>
 </div>
-<div class="bg-surface-container-low rounded-2xl p-8 border border-tarro-nativo/10 flex flex-col items-start">
-<div class="w-12 h-12 rounded-xl bg-reforestacion-pack/10 border border-reforestacion-pack/20 flex items-center justify-center mb-5">
-<span class="material-symbols-outlined text-reforestacion-pack" style="font-variation-settings:'FILL' 1;">wb_sunny</span>
+
+<div class="space-y-3.5">
+<div class="bg-surface rounded-2xl p-4 sm:p-5 border border-tarro-nativo/10 shadow-sm hover:border-reforestacion-pack/40 hover:shadow-md transition-all flex items-center gap-4">
+<div class="w-12 h-12 rounded-xl bg-tarro-nativo text-solar-accent flex items-center justify-center shrink-0 shadow-sm">
+<span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">potted_plant</span>
 </div>
-<h3 class="font-headline-md text-headline-md text-tarro-nativo mb-3">Aclimatados para resistir</h3>
-<p class="font-body-md text-body-md text-on-surface-variant leading-relaxed">Especies criadas al aire libre, preparadas para adaptarse al clima real, ya sea el sol y sequía de la zona central o la humedad del sur.</p>
+<div class="flex-1 min-w-0">
+<div class="flex items-center justify-between gap-2 flex-wrap">
+<h3 class="font-product-tag text-base text-tarro-nativo">Raíces fuertes y sanas</h3>
+<span class="bg-surface-container-low text-tarro-nativo border border-tarro-nativo/10 px-2.5 py-0.5 rounded-full font-label-caps text-[10px]">Bolsa 14 × 21 cm</span>
+</div>
+<p class="font-body-md text-sm text-on-surface-variant mt-0.5">Pan de raíces firme y profundo para trasplantar sin estrés.</p>
+</div>
+</div>
+
+<div class="bg-surface rounded-2xl p-4 sm:p-5 border border-tarro-nativo/10 shadow-sm hover:border-reforestacion-pack/40 hover:shadow-md transition-all flex items-center gap-4">
+<div class="w-12 h-12 rounded-xl bg-tarro-nativo text-solar-accent flex items-center justify-center shrink-0 shadow-sm">
+<span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">eco</span>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex items-center justify-between gap-2 flex-wrap">
+<h3 class="font-product-tag text-base text-tarro-nativo">Tierra y nutrientes listos</h3>
+<span class="bg-surface-container-low text-tarro-nativo border border-tarro-nativo/10 px-2.5 py-0.5 rounded-full font-label-caps text-[10px]">Sustrato nutritivo</span>
+</div>
+<p class="font-body-md text-sm text-on-surface-variant mt-0.5">Mezcla aireada con alimento integrado para afirmarse rápido.</p>
+</div>
+</div>
+
+<div class="bg-surface rounded-2xl p-4 sm:p-5 border border-tarro-nativo/10 shadow-sm hover:border-reforestacion-pack/40 hover:shadow-md transition-all flex items-center gap-4">
+<div class="w-12 h-12 rounded-xl bg-tarro-nativo text-solar-accent flex items-center justify-center shrink-0 shadow-sm">
+<span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">wb_sunny</span>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex items-center justify-between gap-2 flex-wrap">
+<h3 class="font-product-tag text-base text-tarro-nativo">Aclimatados para resistir</h3>
+<span class="bg-surface-container-low text-tarro-nativo border border-tarro-nativo/10 px-2.5 py-0.5 rounded-full font-label-caps text-[10px]">Criados al exterior</span>
+</div>
+<p class="font-body-md text-sm text-on-surface-variant mt-0.5">Endurecidos al aire libre para soportar sol, sequía o frío.</p>
+</div>
+</div>
+</div>
 </div>
 </div>
 </section>
@@ -232,7 +329,12 @@
 <h2 class="font-display text-display-lg-mobile md:text-display-lg text-tarro-nativo mt-1">Especies Nativas Disponibles</h2>
 <p class="font-body-md text-on-surface-variant mt-2">Cada árbol tiene su historia. Toca una especie para ver su ficha técnica y requerimientos.</p>
 </div>
-<div id="species-grid" class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-gutter"></div>
+<div id="species-grid" class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-gutter">
+<div class="rounded-lg bg-surface border border-tarro-nativo/10 overflow-hidden"><div class="h-28 w-full img-skeleton"></div><div class="p-3 space-y-2"><div class="h-4 w-2/3 rounded img-skeleton"></div><div class="h-3 w-1/2 rounded img-skeleton"></div><div class="h-4 w-1/3 rounded img-skeleton"></div></div></div>
+<div class="rounded-lg bg-surface border border-tarro-nativo/10 overflow-hidden"><div class="h-28 w-full img-skeleton"></div><div class="p-3 space-y-2"><div class="h-4 w-3/4 rounded img-skeleton"></div><div class="h-3 w-1/2 rounded img-skeleton"></div><div class="h-4 w-1/3 rounded img-skeleton"></div></div></div>
+<div class="rounded-lg bg-surface border border-tarro-nativo/10 overflow-hidden"><div class="h-28 w-full img-skeleton"></div><div class="p-3 space-y-2"><div class="h-4 w-2/3 rounded img-skeleton"></div><div class="h-3 w-1/2 rounded img-skeleton"></div><div class="h-4 w-1/3 rounded img-skeleton"></div></div></div>
+<div class="rounded-lg bg-surface border border-tarro-nativo/10 overflow-hidden"><div class="h-28 w-full img-skeleton"></div><div class="p-3 space-y-2"><div class="h-4 w-3/4 rounded img-skeleton"></div><div class="h-3 w-1/2 rounded img-skeleton"></div><div class="h-4 w-1/3 rounded img-skeleton"></div></div></div>
+</div>
 
 <div class="mt-10">
 <button id="germinar-toggle" type="button" aria-expanded="false" aria-controls="germinar-panel"
@@ -257,35 +359,39 @@
 <section class="bg-background py-section-gap relative" id="reforestacion">
 <div class="absolute inset-0 bg-pattern"></div>
 <div class="max-w-[1200px] mx-auto px-margin-mobile md:px-margin-desktop relative z-10">
-<div class="flex flex-col md:flex-row gap-16 items-start">
-<div class="w-full md:w-1/2 space-y-6">
-<div class="inline-block bg-reforestacion-pack/10 text-reforestacion-pack px-4 py-2 rounded-full font-label-caps text-label-caps mb-2 border border-reforestacion-pack/20">Crea tu propio bosque</div>
-<h2 class="font-display text-display-lg-mobile md:text-display-lg text-tarro-nativo">Arma tu Pack Nativo</h2>
-<p class="font-body-lg text-body-lg text-on-surface-variant">Elige <strong>5 árboles</strong> — o 10, o 15 — y mezcla las especies disponibles que quieras. Te llegan listos para plantar, a cualquier punto de Chile continental.</p>
-<p class="font-product-tag text-product-tag text-tarro-nativo">Packs de 5 árboles desde <span id="pack-desde" class="text-reforestacion-pack font-bold">$17.500</span> · paga solo al confirmar por WhatsApp</p>
-<div class="flex flex-wrap gap-3">
-<span class="flex items-center gap-2 bg-surface px-3 py-1.5 rounded-full border border-tarro-nativo/10 font-label-caps text-label-caps text-tarro-nativo"><span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">eco</span>Bolsa 14×21 cm</span>
-<span class="flex items-center gap-2 bg-surface px-3 py-1.5 rounded-full border border-tarro-nativo/10 font-label-caps text-label-caps text-tarro-nativo"><span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">inventory_2</span>Pack de 5 unidades</span>
-<span class="flex items-center gap-2 bg-solar-accent/20 px-3 py-1.5 rounded-full border border-solar-accent/40 font-label-caps text-label-caps text-tarro-nativo"><span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">local_shipping</span>Envío Bluexpress</span>
+<div class="flex flex-col md:flex-row gap-10 lg:gap-14 items-center">
+<div class="w-full md:w-1/2 space-y-4">
+<div>
+<div class="inline-block bg-reforestacion-pack/10 text-reforestacion-pack px-3.5 py-1 rounded-full font-label-caps text-label-caps mb-2 border border-reforestacion-pack/20">Crea tu propio bosque</div>
+<h2 class="font-display text-display-lg-mobile md:text-display-lg text-tarro-nativo leading-tight">Arma tu Pack Nativo</h2>
 </div>
-<!-- Pack Builder -->
-<div id="pack-builder" class="bg-surface rounded-xl p-6 border border-tarro-nativo/10 shadow-sm">
-<div class="flex items-center justify-between mb-4">
-<h3 class="font-headline-md text-headline-md text-tarro-nativo">Tu selección</h3>
+<p class="font-body-md text-on-surface-variant">Elige <strong>5 árboles</strong> — o 10, o 15 — y mezcla las especies disponibles que quieras. Te llegan listos para plantar, a cualquier punto de Chile continental.</p>
+<p class="font-product-tag text-product-tag text-tarro-nativo">Packs de 5 árboles desde <span id="pack-desde" class="text-reforestacion-pack font-bold">$17.500</span> · paga solo al confirmar por WhatsApp</p>
+<div class="flex flex-wrap gap-2.5">
+<span class="flex items-center gap-1.5 bg-surface px-3 py-1 rounded-full border border-tarro-nativo/10 font-label-caps text-label-caps text-tarro-nativo"><span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">eco</span>Bolsa 14×21 cm</span>
+<span class="flex items-center gap-1.5 bg-surface px-3 py-1 rounded-full border border-tarro-nativo/10 font-label-caps text-label-caps text-tarro-nativo"><span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">inventory_2</span>Pack de 5 unidades</span>
+<span class="flex items-center gap-1.5 bg-solar-accent/20 px-3 py-1 rounded-full border border-solar-accent/40 font-label-caps text-label-caps text-tarro-nativo"><span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">local_shipping</span>Envío Bluexpress</span>
+</div>
+<!-- Pack Builder compacto -->
+<div id="pack-builder" class="bg-surface rounded-xl p-5 border border-tarro-nativo/10 shadow-sm">
+<div class="flex items-center justify-between mb-2.5">
+<h3 class="font-headline-md text-lg text-tarro-nativo">Tu selección</h3>
 <span class="font-label-caps text-label-caps text-on-surface-variant">Elige múltiplos de 5</span>
 </div>
-<div id="species-selector" class="divide-y divide-tarro-nativo/10 max-h-[24rem] overflow-y-auto -mr-2 pr-2"></div>
-<div class="mt-6 pt-5 border-t border-tarro-nativo/15 space-y-4">
-<div class="flex items-center justify-between">
-<span class="font-label-caps text-label-caps text-on-surface-variant">Total árboles</span>
-<span class="font-headline-md text-headline-md text-tarro-nativo"><span id="tree-count">0</span> <span class="text-on-surface-variant text-body-md">árboles</span></span>
+<div id="species-selector" class="divide-y divide-tarro-nativo/10 max-h-[14rem] overflow-y-auto -mr-2 pr-2"></div>
+<div class="mt-4 pt-3.5 border-t border-tarro-nativo/15 space-y-2.5">
+<div class="flex items-center justify-between gap-4">
+<div>
+<span class="font-label-caps text-[11px] text-on-surface-variant block">Total árboles</span>
+<span class="font-headline-md text-lg text-tarro-nativo"><span id="tree-count">0</span> <span class="text-on-surface-variant text-sm">árboles</span></span>
 </div>
-<p id="count-hint" aria-live="polite" class="font-label-caps text-label-caps text-on-surface-variant"></p>
-<div class="flex items-center justify-between">
-<span class="font-label-caps text-label-caps text-on-surface-variant">Total estimado</span>
-<span id="tree-total" class="font-display text-display-lg-mobile text-reforestacion-pack">$0</span>
+<div class="text-right">
+<span class="font-label-caps text-[11px] text-on-surface-variant block">Total estimado</span>
+<span id="tree-total" class="font-display text-2xl font-bold text-reforestacion-pack">$0</span>
 </div>
-<button id="wa-pack-btn" type="button" class="w-full flex items-center justify-center gap-2 bg-tarro-nativo text-on-primary py-4 rounded font-label-caps text-label-caps hover:bg-surface-tint transition-colors shadow-md opacity-40 cursor-not-allowed" disabled>
+</div>
+<p id="count-hint" aria-live="polite" class="font-label-caps text-[11px] text-on-surface-variant"></p>
+<button id="wa-pack-btn" type="button" class="w-full flex items-center justify-center gap-2 bg-tarro-nativo text-on-primary py-3.5 rounded font-label-caps text-label-caps hover:bg-surface-tint transition-colors shadow-md opacity-40 cursor-not-allowed" disabled>
 <span class="material-symbols-outlined text-base">add_shopping_cart</span>Agregar pack al carrito
 </button>
 </div>
@@ -293,10 +399,10 @@
 </div>
 <div class="w-full md:w-1/2">
 <div class="relative p-2 bg-white rounded-xl shadow-sm border border-tarro-nativo/5">
-<div class="rounded-lg w-full h-[520px] overflow-hidden">
-<img class="w-full h-full object-cover scale-[1.25] origin-center -translate-y-[8%]" alt="Cinco plántulas nativas chilenas en bolsas forestales de 14x21 cm." src="https://danteretamales1102-arch.github.io/Huerto-Nativo/pack-nativo.jpg" loading="lazy" decoding="async"/>
+<div class="rounded-lg w-full h-[560px] overflow-hidden img-skeleton">
+<img class="w-full h-full object-cover scale-[1.25] origin-center -translate-y-[8%]" alt="Cinco plántulas nativas chilenas en bolsas forestales de 14x21 cm." src="https://raw.githubusercontent.com/danteretamales1102-arch/Huerto-Nativo/main/pack-nativo.jpg" loading="lazy" decoding="async"/>
 </div>
-<div class="absolute -bottom-6 -left-6 bg-surface-tint text-surface-bright p-4 rounded-lg shadow-lg flex items-center gap-4">
+<div class="absolute -bottom-5 -left-4 sm:-left-6 bg-surface-tint text-surface-bright p-4 rounded-lg shadow-lg flex items-center gap-4">
 <div class="bg-white/20 p-2 rounded-full"><span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">public</span></div>
 <div><span class="font-label-caps text-label-caps block opacity-80">Cobertura</span><span class="font-product-tag text-product-tag">Chile continental</span></div>
 </div>
@@ -318,12 +424,12 @@
 <div id="tl-track-wrap" class="relative pl-16 sm:pl-24">
 <!-- Riel vertical izquierdo que comienza en 2020 y se detiene exactamente en "Hoy" -->
 <div id="tl-rail" class="absolute left-7 sm:left-9 top-7 w-1.5 -translate-x-1/2 bg-tarro-nativo/10 rounded-full overflow-hidden" style="height: calc(100% - 400px);">
-<div id="tl-line-fill" class="w-full bg-gradient-to-b from-tarro-nativo via-reforestacion-pack to-solar-accent rounded-full transition-[height] duration-150 ease-out" style="height: 0%;"></div>
+<div id="tl-line-fill" class="w-full h-full bg-gradient-to-b from-tarro-nativo via-reforestacion-pack to-solar-accent rounded-full transition-transform duration-150 ease-out" style="transform: scaleY(0);"></div>
 </div>
 
 <div class="space-y-12">
 
-<!-- PROYECTO 0: 2020 — Restauración de ladera (Villarrica) -->
+<!-- PROYECTO 0: 2020 — Restauración en Villarrica (Villarrica) -->
 <div data-tl-item="0" class="tl-item tl-visible tl-current relative">
 <div class="tl-node tl-node-ring absolute -left-9 sm:-left-[60px] top-7 -translate-x-1/2 w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-surface border-4 border-tarro-nativo/25 flex items-center justify-center font-display text-xs sm:text-sm font-bold text-tarro-nativo shadow-md z-10">2020</div>
 
@@ -335,9 +441,9 @@
 
 <div data-proyecto="0" class="tl-card bg-surface rounded-2xl overflow-hidden border border-tarro-nativo/10 shadow-sm hover:shadow-md transition-all cursor-pointer group">
 <div class="relative grid grid-cols-2 gap-0.5 h-60 sm:h-64 bg-surface-container-high">
-<div class="row-span-2 overflow-hidden"><img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="https://danteretamales1102-arch.github.io/Huerto-Nativo/proyectos/villarrica-1.jpg" alt="Restauración de ladera en Villarrica" loading="lazy"/></div>
-<div class="overflow-hidden"><img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="https://danteretamales1102-arch.github.io/Huerto-Nativo/proyectos/villarrica-2.jpg" alt="Restauración de ladera en Villarrica" loading="lazy"/></div>
-<div class="overflow-hidden"><img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="https://danteretamales1102-arch.github.io/Huerto-Nativo/proyectos/villarrica-3.jpg" alt="Restauración de ladera en Villarrica" loading="lazy"/></div>
+<div class="row-span-2 overflow-hidden img-skeleton"><img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="https://raw.githubusercontent.com/danteretamales1102-arch/Huerto-Nativo/main/especies/RP.jpg" onerror="resolveProjectImg(this, 'https://raw.githubusercontent.com/danteretamales1102-arch/Huerto-Nativo/main/proyectos/villarrica-1.jpg')" alt="Restauración en Villarrica" loading="lazy" decoding="async"/></div>
+<div class="overflow-hidden img-skeleton"><img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="https://raw.githubusercontent.com/danteretamales1102-arch/Huerto-Nativo/main/especies/RP1.jpg" onerror="resolveProjectImg(this, 'https://raw.githubusercontent.com/danteretamales1102-arch/Huerto-Nativo/main/proyectos/villarrica-2.jpg')" alt="Restauración en Villarrica" loading="lazy" decoding="async"/></div>
+<div class="overflow-hidden img-skeleton"><img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="https://raw.githubusercontent.com/danteretamales1102-arch/Huerto-Nativo/main/especies/RP2.jpg" onerror="resolveProjectImg(this, 'https://raw.githubusercontent.com/danteretamales1102-arch/Huerto-Nativo/main/proyectos/villarrica-3.jpg')" alt="Restauración en Villarrica" loading="lazy" decoding="async"/></div>
 <span class="absolute top-3 left-3 bg-surface/95 backdrop-blur-sm text-tarro-nativo border border-tarro-nativo/15 px-3 py-1 rounded-full font-label-caps text-[10px] flex items-center gap-1 shadow-sm">
 <span class="material-symbols-outlined text-xs text-reforestacion-pack" style="font-variation-settings:'FILL' 1;">eco</span>Desarrollado por Huerto Nativo
 </span>
@@ -347,7 +453,7 @@
 <span class="material-symbols-outlined text-sm" style="font-variation-settings:'FILL' 1;">location_on</span>
 <span>Villarrica · La Araucanía</span>
 </div>
-<h3 class="font-headline-md text-headline-md text-tarro-nativo mb-1.5 group-hover:text-reforestacion-pack transition-colors">Restauración de ladera</h3>
+<h3 class="font-headline-md text-headline-md text-tarro-nativo mb-1.5 group-hover:text-reforestacion-pack transition-colors">Restauración en Villarrica</h3>
 <p class="font-body-md text-sm text-on-surface-variant">Enriquecimiento continuo por etapas en 7 ha para sombra, cercos vivos, control de erosión y madera futura.</p>
 <div class="mt-4 pt-3 border-t border-tarro-nativo/10 flex items-center justify-between font-label-caps text-label-caps text-reforestacion-pack">
 <span>Ver fotos e historia completa</span>
@@ -369,9 +475,9 @@
 
 <div data-proyecto="1" class="tl-card bg-surface rounded-2xl overflow-hidden border border-tarro-nativo/10 shadow-sm hover:shadow-md transition-all cursor-pointer group">
 <div class="relative grid grid-cols-2 gap-0.5 h-60 sm:h-64 bg-surface-container-high">
-<div class="row-span-2 overflow-hidden"><img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="https://danteretamales1102-arch.github.io/Huerto-Nativo/proyectos/algarrobo-2.jpg" alt="Restauración en Algarrobo" loading="lazy"/></div>
-<div class="overflow-hidden"><img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="https://danteretamales1102-arch.github.io/Huerto-Nativo/proyectos/algarrobo-1.jpg" alt="Restauración en Algarrobo" loading="lazy"/></div>
-<div class="overflow-hidden"><img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="https://danteretamales1102-arch.github.io/Huerto-Nativo/proyectos/algarrobo-3.jpg" alt="Restauración en Algarrobo" loading="lazy"/></div>
+<div class="row-span-2 overflow-hidden img-skeleton"><img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="https://raw.githubusercontent.com/danteretamales1102-arch/Huerto-Nativo/main/especies/RA.jpg" onerror="resolveProjectImg(this, 'https://raw.githubusercontent.com/danteretamales1102-arch/Huerto-Nativo/main/proyectos/algarrobo-2.jpg')" alt="Restauración en Algarrobo" loading="lazy" decoding="async"/></div>
+<div class="overflow-hidden img-skeleton"><img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="https://raw.githubusercontent.com/danteretamales1102-arch/Huerto-Nativo/main/especies/RA1.jpg" onerror="resolveProjectImg(this, 'https://raw.githubusercontent.com/danteretamales1102-arch/Huerto-Nativo/main/proyectos/algarrobo-1.jpg')" alt="Restauración en Algarrobo" loading="lazy" decoding="async"/></div>
+<div class="overflow-hidden img-skeleton"><img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="https://raw.githubusercontent.com/danteretamales1102-arch/Huerto-Nativo/main/especies/RA2.jpg" onerror="resolveProjectImg(this, 'https://raw.githubusercontent.com/danteretamales1102-arch/Huerto-Nativo/main/proyectos/algarrobo-3.jpg')" alt="Restauración en Algarrobo" loading="lazy" decoding="async"/></div>
 <span class="absolute top-3 left-3 bg-surface/95 backdrop-blur-sm text-tarro-nativo border border-tarro-nativo/15 px-3 py-1 rounded-full font-label-caps text-[10px] flex items-center gap-1 shadow-sm">
 <span class="material-symbols-outlined text-xs text-reforestacion-pack" style="font-variation-settings:'FILL' 1;">handshake</span>Desarrollado por Restauremos
 </span>
@@ -403,9 +509,9 @@
 
 <div data-proyecto="2" class="tl-card bg-surface rounded-2xl overflow-hidden border border-tarro-nativo/10 shadow-sm hover:shadow-md transition-all cursor-pointer group">
 <div class="relative grid grid-cols-2 gap-0.5 h-60 sm:h-64 bg-surface-container-high">
-<div class="row-span-2 overflow-hidden"><img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="https://danteretamales1102-arch.github.io/Huerto-Nativo/especies/BR.jpg" onerror="resolveProjectImg(this, 'https://danteretamales1102-arch.github.io/Huerto-Nativo/especies/peumo.jpg')" alt="Catastro botánico Hotel Bosque de Reñaca" loading="lazy"/></div>
-<div class="overflow-hidden"><img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="https://danteretamales1102-arch.github.io/Huerto-Nativo/especies/BR1.jpg" onerror="resolveProjectImg(this, 'https://danteretamales1102-arch.github.io/Huerto-Nativo/especies/arrayan.jpg')" alt="Catastro botánico Hotel Bosque de Reñaca" loading="lazy"/></div>
-<div class="overflow-hidden"><img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="https://danteretamales1102-arch.github.io/Huerto-Nativo/especies/BR2.jpg" onerror="resolveProjectImg(this, 'https://danteretamales1102-arch.github.io/Huerto-Nativo/especies/araucaria.jpg')" alt="Catastro botánico Hotel Bosque de Reñaca" loading="lazy"/></div>
+<div class="row-span-2 overflow-hidden img-skeleton"><img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="https://raw.githubusercontent.com/danteretamales1102-arch/Huerto-Nativo/main/especies/HB.jpg" onerror="resolveProjectImg(this, 'https://raw.githubusercontent.com/danteretamales1102-arch/Huerto-Nativo/main/especies/peumo.jpg')" alt="Catastro botánico Hotel Bosque de Reñaca" loading="lazy" decoding="async"/></div>
+<div class="overflow-hidden img-skeleton"><img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="https://raw.githubusercontent.com/danteretamales1102-arch/Huerto-Nativo/main/especies/HB1.jpg" onerror="resolveProjectImg(this, 'https://raw.githubusercontent.com/danteretamales1102-arch/Huerto-Nativo/main/especies/arrayan.jpg')" alt="Catastro botánico Hotel Bosque de Reñaca" loading="lazy" decoding="async"/></div>
+<div class="overflow-hidden img-skeleton"><img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="https://raw.githubusercontent.com/danteretamales1102-arch/Huerto-Nativo/main/especies/HB2.jpg" onerror="resolveProjectImg(this, 'https://raw.githubusercontent.com/danteretamales1102-arch/Huerto-Nativo/main/especies/araucaria.jpg')" alt="Catastro botánico Hotel Bosque de Reñaca" loading="lazy" decoding="async"/></div>
 <span class="absolute top-3 left-3 bg-surface/95 backdrop-blur-sm text-tarro-nativo border border-tarro-nativo/15 px-3 py-1 rounded-full font-label-caps text-[10px] flex items-center gap-1 shadow-sm">
 <span class="material-symbols-outlined text-xs text-reforestacion-pack" style="font-variation-settings:'FILL' 1;">eco</span>Desarrollado por Huerto Nativo
 </span>
@@ -437,9 +543,9 @@
 
 <div data-proyecto="3" class="tl-card bg-surface rounded-2xl overflow-hidden border border-tarro-nativo/10 shadow-sm hover:shadow-md transition-all cursor-pointer group">
 <div class="relative grid grid-cols-2 gap-0.5 h-60 sm:h-64 bg-surface-container-high">
-<div class="row-span-2 overflow-hidden"><img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="https://danteretamales1102-arch.github.io/Huerto-Nativo/especies/JN.jpg" onerror="resolveProjectImg(this, 'https://danteretamales1102-arch.github.io/Huerto-Nativo/especies/murta.jpg')" alt="Jardinera nativa en Villarrica" loading="lazy"/></div>
-<div class="overflow-hidden"><img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="https://danteretamales1102-arch.github.io/Huerto-Nativo/especies/JN1.jpg" onerror="resolveProjectImg(this, 'https://danteretamales1102-arch.github.io/Huerto-Nativo/especies/arrayan.jpg')" alt="Jardinera nativa en Villarrica" loading="lazy"/></div>
-<div class="overflow-hidden"><img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="https://danteretamales1102-arch.github.io/Huerto-Nativo/especies/JN2.jpg" onerror="resolveProjectImg(this, 'https://danteretamales1102-arch.github.io/Huerto-Nativo/especies/avellano-chileno.jpg')" alt="Jardinera nativa en Villarrica" loading="lazy"/></div>
+<div class="row-span-2 overflow-hidden img-skeleton"><img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="https://raw.githubusercontent.com/danteretamales1102-arch/Huerto-Nativo/main/especies/JN.jpg" onerror="resolveProjectImg(this, 'https://raw.githubusercontent.com/danteretamales1102-arch/Huerto-Nativo/main/especies/murta.jpg')" alt="Jardinera nativa en Villarrica" loading="lazy" decoding="async"/></div>
+<div class="overflow-hidden img-skeleton"><img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="https://raw.githubusercontent.com/danteretamales1102-arch/Huerto-Nativo/main/especies/JN1.jpg" onerror="resolveProjectImg(this, 'https://raw.githubusercontent.com/danteretamales1102-arch/Huerto-Nativo/main/especies/arrayan.jpg')" alt="Jardinera nativa en Villarrica" loading="lazy" decoding="async"/></div>
+<div class="overflow-hidden img-skeleton"><img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="https://raw.githubusercontent.com/danteretamales1102-arch/Huerto-Nativo/main/especies/JN2.jpg" onerror="resolveProjectImg(this, 'https://raw.githubusercontent.com/danteretamales1102-arch/Huerto-Nativo/main/especies/avellano-chileno.jpg')" alt="Jardinera nativa en Villarrica" loading="lazy" decoding="async"/></div>
 <span class="absolute top-3 left-3 bg-surface/95 backdrop-blur-sm text-tarro-nativo border border-tarro-nativo/15 px-3 py-1 rounded-full font-label-caps text-[10px] flex items-center gap-1 shadow-sm">
 <span class="material-symbols-outlined text-xs text-reforestacion-pack" style="font-variation-settings:'FILL' 1;">eco</span>Desarrollado por Huerto Nativo
 </span>
@@ -471,9 +577,9 @@
 
 <div data-proyecto="4" class="tl-card bg-surface rounded-2xl overflow-hidden border border-tarro-nativo/10 shadow-sm hover:shadow-md transition-all cursor-pointer group">
 <div class="relative grid grid-cols-2 gap-0.5 h-60 sm:h-64 bg-surface-container-high">
-<div class="row-span-2 overflow-hidden"><img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="https://danteretamales1102-arch.github.io/Huerto-Nativo/especies/CP.jpg" onerror="resolveProjectImg(this, 'https://danteretamales1102-arch.github.io/Huerto-Nativo/especies/quillay.jpg')" alt="Restauración en Catapilco" loading="lazy"/></div>
-<div class="overflow-hidden"><img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="https://danteretamales1102-arch.github.io/Huerto-Nativo/especies/CP1.jpg" onerror="resolveProjectImg(this, 'https://danteretamales1102-arch.github.io/Huerto-Nativo/especies/litre.jpg')" alt="Restauración en Catapilco" loading="lazy"/></div>
-<div class="overflow-hidden"><img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="https://danteretamales1102-arch.github.io/Huerto-Nativo/especies/CP2.jpg" onerror="resolveProjectImg(this, 'https://danteretamales1102-arch.github.io/Huerto-Nativo/especies/peumo.jpg')" alt="Restauración en Catapilco" loading="lazy"/></div>
+<div class="row-span-2 overflow-hidden img-skeleton"><img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="https://raw.githubusercontent.com/danteretamales1102-arch/Huerto-Nativo/main/especies/CP.jpg" onerror="resolveProjectImg(this, 'https://raw.githubusercontent.com/danteretamales1102-arch/Huerto-Nativo/main/especies/quillay.jpg')" alt="Restauración en Catapilco" loading="lazy" decoding="async"/></div>
+<div class="overflow-hidden img-skeleton"><img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="https://raw.githubusercontent.com/danteretamales1102-arch/Huerto-Nativo/main/especies/CP1.jpg" onerror="resolveProjectImg(this, 'https://raw.githubusercontent.com/danteretamales1102-arch/Huerto-Nativo/main/especies/litre.jpg')" alt="Restauración en Catapilco" loading="lazy" decoding="async"/></div>
+<div class="overflow-hidden img-skeleton"><img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="https://raw.githubusercontent.com/danteretamales1102-arch/Huerto-Nativo/main/especies/CP2.jpg" onerror="resolveProjectImg(this, 'https://raw.githubusercontent.com/danteretamales1102-arch/Huerto-Nativo/main/especies/peumo.jpg')" alt="Restauración en Catapilco" loading="lazy" decoding="async"/></div>
 <span class="absolute top-3 left-3 bg-surface/95 backdrop-blur-sm text-tarro-nativo border border-tarro-nativo/15 px-3 py-1 rounded-full font-label-caps text-[10px] flex items-center gap-1 shadow-sm">
 <span class="material-symbols-outlined text-xs text-reforestacion-pack" style="font-variation-settings:'FILL' 1;">handshake</span>Desarrollado por Restauremos
 </span>
@@ -608,7 +714,7 @@
 <div class="grid grid-cols-1 md:grid-cols-4 gap-gutter max-w-[1200px] mx-auto py-section-gap px-margin-mobile md:px-margin-desktop">
 <div class="col-span-1 md:col-span-2">
 <div class="flex items-center gap-3 mb-4">
-<img src="https://danteretamales1102-arch.github.io/Huerto-Nativo/huerto-nativo-512-transparente.png" alt="Huerto Nativo" class="h-12 w-12 shrink-0 bg-surface-bright rounded-full p-1 object-contain"/>
+<img src="https://raw.githubusercontent.com/danteretamales1102-arch/Huerto-Nativo/main/huerto-nativo-512-transparente.png" alt="Huerto Nativo" class="h-12 w-12 shrink-0 bg-surface-bright rounded-full p-1 object-contain"/>
 <span class="font-display text-headline-md font-bold text-tarro-nativo">Huerto Nativo</span>
 </div>
 <p class="font-body-md text-on-surface-variant max-w-sm mb-6">© 2026 Huerto Nativo. Compromiso con la biodiversidad chilena. El renacer de nuestra tierra comienza aquí.</p>
@@ -657,7 +763,7 @@
 <button id="sm-close" type="button" aria-label="Cerrar ficha" class="absolute top-3 right-3 z-10 w-10 h-10 flex items-center justify-center rounded-full bg-background/90 text-tarro-nativo hover:bg-tarro-nativo hover:text-on-primary shadow-md transition-colors">
 <span class="material-symbols-outlined">close</span>
 </button>
-<div class="relative h-56 w-full overflow-hidden bg-surface-container-high">
+<div class="relative h-56 w-full overflow-hidden bg-surface-container-high img-skeleton">
 <img id="sm-img" src="" alt="" class="w-full h-full object-cover"/>
 <div class="absolute inset-0 bg-gradient-to-t from-tarro-nativo/80 via-tarro-nativo/10 to-transparent"></div>
 <span id="sm-badge" class="hidden absolute top-3 left-3 bg-error text-white px-3 py-1 rounded-full font-label-caps text-[11px] shadow-md"></span>
@@ -710,7 +816,7 @@
 <span class="material-symbols-outlined">close</span>
 </button>
 <!-- Carrusel de imágenes del proyecto -->
-<div id="pm-carousel" class="relative h-72 sm:h-80 w-full bg-surface-container-high overflow-hidden select-none">
+<div id="pm-carousel" class="relative h-72 sm:h-80 w-full bg-surface-container-high overflow-hidden select-none img-skeleton">
 <img id="pm-slide-img" src="" alt="" class="w-full h-full object-cover transition-opacity duration-300"/>
 <div class="absolute inset-0 bg-gradient-to-t from-tarro-nativo/60 via-transparent to-tarro-nativo/20 pointer-events-none"></div>
 <div class="absolute top-3 left-3 z-20 flex items-center gap-2">
@@ -843,62 +949,62 @@ Siguiente en el tiempo<span class="material-symbols-outlined text-sm">arrow_forw
     const WA_PHONE = '56941841757';
 
     const SPECIES = [
-        { name: 'Palma chilena', sci: 'Jubaea chilensis', price: 8000, img: 'https://danteretamales1102-arch.github.io/Huerto-Nativo/especies/palma-chilena.jpg', stock: true,
+        { name: 'Palma chilena', sci: 'Jubaea chilensis', price: 8000, img: 'https://raw.githubusercontent.com/danteretamales1102-arch/Huerto-Nativo/main/especies/palma-chilena.jpg', stock: true,
           agua: 'Bajo-medio · rústica y resistente', sombra: 'Semi-tolerante joven · pleno sol adulta',
           dato: 'La palmera más austral del mundo, endémica de Chile y capaz de vivir más de 1.000 años. Especie de alto valor patrimonial.' },
-        { name: 'Araucaria', sci: 'Araucaria araucana', price: 8000, img: 'https://danteretamales1102-arch.github.io/Huerto-Nativo/especies/araucaria.jpg', stock: true,
+        { name: 'Araucaria', sci: 'Araucaria araucana', price: 8000, img: 'https://raw.githubusercontent.com/danteretamales1102-arch/Huerto-Nativo/main/especies/araucaria.jpg', stock: true,
           agua: 'Medio · suelo bien drenado', sombra: 'Heliófita · semisombra inicial en zona central',
           dato: 'Árbol sagrado del pueblo Pehuenche y Monumento Natural de Chile. Conífera milenaria de arquitectura única.' },
-        { name: 'Avellano chileno', sci: 'Gevuina avellana', price: 7500, img: 'https://danteretamales1102-arch.github.io/Huerto-Nativo/especies/avellano-chileno.jpg', stock: true,
+        { name: 'Avellano chileno', sci: 'Gevuina avellana', price: 7500, img: 'https://raw.githubusercontent.com/danteretamales1102-arch/Huerto-Nativo/main/especies/avellano-chileno.jpg', stock: true,
           agua: 'Medio-alto · prefiere humedad', sombra: 'Tolerante · ideal semisombra',
           dato: 'Siempreverde de follaje frondoso que produce avellanas comestibles y flores blancas melíferas en otoño.' },
-        { name: 'Coihue', sci: 'Nothofagus dombeyi', price: 7000, img: 'https://danteretamales1102-arch.github.io/Huerto-Nativo/especies/coihue.jpg', stock: true,
+        { name: 'Coihue', sci: 'Nothofagus dombeyi', price: 7000, img: 'https://raw.githubusercontent.com/danteretamales1102-arch/Huerto-Nativo/main/especies/coihue.jpg', stock: true,
           agua: 'Alto · requiere riego regular', sombra: 'Heliófita · semi-tolerante de joven',
           dato: 'Gigante siempreverde que estructura los bosques del sur de Chile. De crecimiento vigoroso cuando cuenta con humedad constante.' },
-        { name: 'Arrayán', sci: 'Luma apiculata', price: 6500, img: 'https://danteretamales1102-arch.github.io/Huerto-Nativo/especies/arrayan.jpg', stock: true,
+        { name: 'Arrayán', sci: 'Luma apiculata', price: 6500, img: 'https://raw.githubusercontent.com/danteretamales1102-arch/Huerto-Nativo/main/especies/arrayan.jpg', stock: true,
           agua: 'Medio-alto', sombra: 'Tolerante · adapta bien en maceta o suelo',
           dato: 'Inconfundible por su corteza color canela con manchas blancas, flores perfumadas y frutos comestibles.' },
-        { name: 'Roble hualle', sci: 'Nothofagus obliqua', price: 6000, img: 'https://danteretamales1102-arch.github.io/Huerto-Nativo/especies/roble-hualle.jpg', stock: true,
+        { name: 'Roble hualle', sci: 'Nothofagus obliqua', price: 6000, img: 'https://raw.githubusercontent.com/danteretamales1102-arch/Huerto-Nativo/main/especies/roble-hualle.jpg', stock: true,
           agua: 'Medio', sombra: 'Heliófita · pleno sol',
           dato: 'Caducifolio noble cuyo follaje se tiñe de tonos dorados y rojizos en otoño antes de renovar su copa en primavera.' },
-        { name: 'Peumo', sci: 'Cryptocarya alba', price: 5500, img: 'https://danteretamales1102-arch.github.io/Huerto-Nativo/especies/peumo.jpg', stock: true,
+        { name: 'Peumo', sci: 'Cryptocarya alba', price: 5500, img: 'https://raw.githubusercontent.com/danteretamales1102-arch/Huerto-Nativo/main/especies/peumo.jpg', stock: true,
           agua: 'Medio · tolera sequía moderada', sombra: 'Tolerante · sol a sombra',
           dato: 'Árbol siempreverde de follaje denso y aromático. Sus frutos rojos alimentan a la fauna nativa y es pilar del bosque esclerófilo.' },
-        { name: 'Murta', sci: 'Ugni molinae', price: 5500, img: 'https://danteretamales1102-arch.github.io/Huerto-Nativo/especies/murta.jpg', stock: true,
+        { name: 'Murta', sci: 'Ugni molinae', price: 5500, img: 'https://raw.githubusercontent.com/danteretamales1102-arch/Huerto-Nativo/main/especies/murta.jpg', stock: true,
           agua: 'Medio', sombra: 'Sol a semisombra · apta para macetero',
           dato: 'Arbusto nativo siempreverde que produce bayas rojas intensamente aromáticas y dulces a fines de verano.' },
-        { name: 'Belloto del Norte', sci: 'Beilschmiedia miersii', price: 5000, img: 'https://danteretamales1102-arch.github.io/Huerto-Nativo/especies/belloto-del-norte.jpg', stock: true, maxStock: 1, badge: '¡Última unidad!',
+        { name: 'Belloto del Norte', sci: 'Beilschmiedia miersii', price: 5000, img: 'https://raw.githubusercontent.com/danteretamales1102-arch/Huerto-Nativo/main/especies/belloto-del-norte.jpg', stock: true, maxStock: 1, badge: '¡Última unidad!',
           agua: 'Medio · prefiere quebradas frescas', sombra: 'Tolerante · sol a semisombra',
           dato: 'Monumento Natural de Chile y especie endémica amenazada. Posee hojas relucientes siempreverdes y frutos característicos. ¡Última unidad disponible!' },
-        { name: 'Quebracho', sci: 'Senna candolleana', price: 5000, img: 'https://danteretamales1102-arch.github.io/Huerto-Nativo/especies/quebracho.jpg', stock: true, maxStock: 1, badge: '¡Última unidad!',
+        { name: 'Quebracho', sci: 'Senna candolleana', price: 5000, img: 'https://raw.githubusercontent.com/danteretamales1102-arch/Huerto-Nativo/main/especies/quebracho.jpg', stock: true, maxStock: 1, badge: '¡Última unidad!',
           agua: 'Bajo · resistente a sequía', sombra: 'Heliófita · pleno sol',
           dato: 'Arbolito nativo de abundante floración amarilla y fijador de nitrógeno. ¡Última unidad lista para entrega inmediata!' },
-        { name: 'Huingán', sci: 'Schinus polygamus', price: 5000, img: 'https://danteretamales1102-arch.github.io/Huerto-Nativo/especies/huingan.jpg', stock: true, maxStock: 1, badge: '¡Última unidad!',
+        { name: 'Huingán', sci: 'Schinus polygamus', price: 5000, img: 'https://raw.githubusercontent.com/danteretamales1102-arch/Huerto-Nativo/main/especies/huingan.jpg', stock: true, maxStock: 1, badge: '¡Última unidad!',
           agua: 'Muy bajo · alta resistencia al calor y sequía', sombra: 'Pleno sol',
           dato: 'Arbusto o arbolito rústico de la zona central, excelente fijador de laderas y melífero. Posee bayas morado-negruzcas. ¡Última unidad disponible!' },
-        { name: 'Maqui', sci: 'Aristotelia chilensis', price: 5000, img: 'https://danteretamales1102-arch.github.io/Huerto-Nativo/especies/maqui.jpg', stock: true,
+        { name: 'Maqui', sci: 'Aristotelia chilensis', price: 5000, img: 'https://raw.githubusercontent.com/danteretamales1102-arch/Huerto-Nativo/main/especies/maqui.jpg', stock: true,
           agua: 'Medio', sombra: 'Especie pionera de rápido crecimiento',
           dato: 'Sus bayas poseen una de las mayores concentraciones de antioxidantes del mundo y atraen gran cantidad de aves nativas.' },
-        { name: 'Maitén', sci: 'Maytenus boaria', price: 4500, img: 'https://danteretamales1102-arch.github.io/Huerto-Nativo/especies/maiten.jpg', stock: true,
+        { name: 'Maitén', sci: 'Maytenus boaria', price: 4500, img: 'https://raw.githubusercontent.com/danteretamales1102-arch/Huerto-Nativo/main/especies/maiten.jpg', stock: true,
           agua: 'Bajo-medio · muy adaptable', sombra: 'Pleno sol a media sombra',
           dato: 'Árbol siempreverde de ramas péndulas elegantes y rápido desarrollo, ideal para sombra suave en jardines y parcelas.' },
-        { name: 'Litre', sci: 'Lithraea caustica', price: 4000, img: 'https://danteretamales1102-arch.github.io/Huerto-Nativo/especies/litre.jpg', stock: true, maxStock: 2, badge: '¡Últimas 2 unidades!',
+        { name: 'Litre', sci: 'Lithraea caustica', price: 4000, img: 'https://raw.githubusercontent.com/danteretamales1102-arch/Huerto-Nativo/main/especies/litre.jpg', stock: true, maxStock: 2, badge: '¡Últimas 2 unidades!',
           agua: 'Muy bajo · extrema resistencia a sequía', sombra: 'Pleno sol',
           dato: 'Especie clave para restaurar laderas secas y cierres perimetrales sin riego en la zona central. Solo quedan 2 unidades disponibles en este lote.' },
-        { name: 'Huilmo', sci: 'Sisyrinchium striatum', price: 4000, img: 'https://danteretamales1102-arch.github.io/Huerto-Nativo/especies/huilmo.jpg', stock: true,
+        { name: 'Huilmo', sci: 'Sisyrinchium striatum', price: 4000, img: 'https://raw.githubusercontent.com/danteretamales1102-arch/Huerto-Nativo/main/especies/huilmo.jpg', stock: true,
           agua: 'Bajo-medio', sombra: 'Sol a media sombra',
           dato: 'Herbácea perenne nativa de espigas florales amarillas, rústica y excelente para bordes paisajísticos de bajo consumo hídrico.' },
-        { name: 'Quillay', sci: 'Quillaja saponaria', price: 4500, img: 'https://danteretamales1102-arch.github.io/Huerto-Nativo/especies/quillay.jpg', stock: false,
+        { name: 'Quillay', sci: 'Quillaja saponaria', price: 4500, img: 'https://raw.githubusercontent.com/danteretamales1102-arch/Huerto-Nativo/main/especies/quillay.jpg', stock: false,
           agua: 'Bajo · resistente a sequía', sombra: 'Heliófita · pleno sol',
           dato: 'Árbol endémico siempreverde de gran valor melífero y ecológico, altamente resistente a suelos pobres y clima seco.' },
-        { name: 'Olivillo', sci: 'Aextoxicon punctatum', price: 5000, img: 'https://danteretamales1102-arch.github.io/Huerto-Nativo/especies/olivillo.jpg', stock: false,
+        { name: 'Olivillo', sci: 'Aextoxicon punctatum', price: 5000, img: 'https://raw.githubusercontent.com/danteretamales1102-arch/Huerto-Nativo/main/especies/olivillo.jpg', stock: false,
           agua: 'Medio-alto · prefiere humedad constante', sombra: 'Tolerante · ideal semisombra',
           dato: 'Árbol siempreverde emblemático de los bosques húmedos y costeros de Chile. Destaca por su copa densa, hojas con envés punteado y gran valor en restauración ecológica.' },
-        { name: 'Espino', sci: 'Vachellia caven', price: 3500, img: 'https://danteretamales1102-arch.github.io/Huerto-Nativo/especies/espino.jpg', stock: false,
+        { name: 'Espino', sci: 'Vachellia caven', price: 3500, img: 'https://raw.githubusercontent.com/danteretamales1102-arch/Huerto-Nativo/main/especies/espino.jpg', stock: false,
           agua: 'Muy bajo · xerófita espinosa', sombra: 'Heliófita · pleno sol',
           dato: 'Fijador de nitrógeno que regenera suelos degradados y florece tempranamente con aromos perfumados.' }
     ];
-    const FALLBACK_IMG = 'https://danteretamales1102-arch.github.io/Huerto-Nativo/huerto-nativo-512-transparente.png';
+    const FALLBACK_IMG = 'https://raw.githubusercontent.com/danteretamales1102-arch/Huerto-Nativo/main/huerto-nativo-512-transparente.png';
 
     const clp = (n) => '$' + n.toLocaleString('es-CL');
     const waLink = (msg) => `https://wa.me/${WA_PHONE}?text=${encodeURIComponent(msg)}`;
@@ -943,8 +1049,8 @@ Siguiente en el tiempo<span class="material-symbols-outlined text-sm">arrow_forw
         card.setAttribute('aria-label', `Ver ficha de ${sp.name}`);
         const sinStock = sp.stock === false;
         card.innerHTML = `
-            <div class="relative h-28 w-full overflow-hidden bg-surface-container-high">
-                <img src="${sp.img}" alt="${sp.name} (${sp.sci})" loading="lazy" onerror="this.onerror=null;this.src='${FALLBACK_IMG}'"
+            <div class="relative h-28 w-full overflow-hidden bg-surface-container-high img-skeleton">
+                <img src="${sp.img}" alt="${sp.name} (${sp.sci})" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='${FALLBACK_IMG}'"
                      class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300${sinStock ? ' grayscale-[40%]' : ''}"/>
                 ${sinStock ? `<div class="absolute inset-0 bg-amber-900/20"></div>
                 <span class="absolute top-2 left-2 flex items-center gap-1 bg-amber-500/95 text-white px-2 py-1 rounded-full font-label-caps text-[10px] shadow-sm">
@@ -963,6 +1069,7 @@ Siguiente en el tiempo<span class="material-symbols-outlined text-sm">arrow_forw
         return card;
     }
 
+    grid.innerHTML = '';
     let germinarCount = 0;
     SPECIES.forEach((sp, i) => {
         const card = buildSpeciesCard(sp, i);
@@ -994,7 +1101,9 @@ Siguiente en el tiempo<span class="material-symbols-outlined text-sm">arrow_forw
     function openSpeciesModal(i) {
         const sp = SPECIES[i];
         smCurrent = sp;
-        smImg.onerror = function () { this.onerror = null; this.src = FALLBACK_IMG; };
+        if (smImg.parentElement) smImg.parentElement.classList.remove('sk-done');
+        smImg.onload = function () { if (this.parentElement) this.parentElement.classList.add('sk-done'); };
+        smImg.onerror = function () { this.onerror = null; this.src = FALLBACK_IMG; if (this.parentElement) this.parentElement.classList.add('sk-done'); };
         smImg.src = sp.img;
         smImg.alt = `${sp.name} (${sp.sci})`;
         document.getElementById('sm-name').textContent = sp.name;
@@ -1095,11 +1204,11 @@ Siguiente en el tiempo<span class="material-symbols-outlined text-sm">arrow_forw
     sortedIndices.forEach((i) => {
         const sp = SPECIES[i];
         const row = document.createElement('div');
-        row.className = 'flex items-center justify-between gap-3 py-3';
+        row.className = 'flex items-center justify-between gap-3 py-2';
         row.innerHTML = `
             <div class="flex items-center gap-3 min-w-0">
-                <img src="${sp.img}" alt="${sp.name}" loading="lazy" onerror="this.onerror=null;this.src='${FALLBACK_IMG}'"
-                     class="w-12 h-12 rounded-md object-cover shrink-0 bg-surface-container-high"/>
+                <img src="${sp.img}" alt="${sp.name}" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='${FALLBACK_IMG}'"
+                     class="w-10 h-10 rounded-md object-cover shrink-0 bg-surface-container-high"/>
                 <div class="min-w-0">
                     <div class="flex items-center gap-2 flex-wrap">
                         <span class="font-body-md font-semibold text-tarro-nativo truncate">${sp.name}</span>
@@ -1260,7 +1369,7 @@ Siguiente en el tiempo<span class="material-symbols-outlined text-sm">arrow_forw
             fecha: 'Julio 2020 – Presente (2026)',
             autoria: 'Desarrollado por Huerto Nativo',
             propio: true,
-            titulo: 'Restauración de ladera',
+            titulo: 'Restauración en Villarrica',
             sub: 'Proyecto continuo por etapas para el enriquecimiento de especies a lo largo de 7 hectáreas.',
             superficie: '7 ha · Laderas, planos y cercos',
             escala: 'Plantación continua (2020–2026)',
@@ -1269,20 +1378,24 @@ Siguiente en el tiempo<span class="material-symbols-outlined text-sm">arrow_forw
             resultado: 'Tras seis años de plantación continua, hoy conviven árboles de las primeras etapas que ya superan los 3 metros de altura junto a otros ejemplares que recién comienzan su desarrollo.',
             especies: ['Olivillo', 'Avellano chileno', 'Roble', 'Coihue', 'Maqui', 'Boldo', 'Radal'],
             fotos: [
-                'https://danteretamales1102-arch.github.io/Huerto-Nativo/proyectos/villarrica-1.jpg',
-                'https://danteretamales1102-arch.github.io/Huerto-Nativo/proyectos/villarrica-2.jpg',
-                'https://danteretamales1102-arch.github.io/Huerto-Nativo/proyectos/villarrica-3.jpg',
-                'https://danteretamales1102-arch.github.io/Huerto-Nativo/proyectos/villarrica-4.jpg',
-                'https://danteretamales1102-arch.github.io/Huerto-Nativo/proyectos/villarrica-5.jpg',
-                'https://danteretamales1102-arch.github.io/Huerto-Nativo/proyectos/villarrica-6.jpg'
+                'https://raw.githubusercontent.com/danteretamales1102-arch/Huerto-Nativo/main/especies/RP.jpg',
+                'https://raw.githubusercontent.com/danteretamales1102-arch/Huerto-Nativo/main/especies/RP1.jpg',
+                'https://raw.githubusercontent.com/danteretamales1102-arch/Huerto-Nativo/main/especies/RP2.jpg',
+                'https://raw.githubusercontent.com/danteretamales1102-arch/Huerto-Nativo/main/especies/RP3.jpg',
+                'https://raw.githubusercontent.com/danteretamales1102-arch/Huerto-Nativo/main/especies/RP4.jpg',
+                'https://raw.githubusercontent.com/danteretamales1102-arch/Huerto-Nativo/main/especies/RP5.jpg',
+                'https://raw.githubusercontent.com/danteretamales1102-arch/Huerto-Nativo/main/especies/RP6.jpg',
+                'https://raw.githubusercontent.com/danteretamales1102-arch/Huerto-Nativo/main/especies/RP7.jpg',
+                'https://raw.githubusercontent.com/danteretamales1102-arch/Huerto-Nativo/main/especies/RP8.jpg',
+                'https://raw.githubusercontent.com/danteretamales1102-arch/Huerto-Nativo/main/especies/RP9.jpg'
             ],
             fallbacks: [
-                'https://danteretamales1102-arch.github.io/Huerto-Nativo/especies/coihue.jpg',
-                'https://danteretamales1102-arch.github.io/Huerto-Nativo/especies/roble-hualle.jpg',
-                'https://danteretamales1102-arch.github.io/Huerto-Nativo/especies/avellano-chileno.jpg',
-                'https://danteretamales1102-arch.github.io/Huerto-Nativo/especies/arrayan.jpg',
-                'https://danteretamales1102-arch.github.io/Huerto-Nativo/especies/maqui.jpg',
-                'https://danteretamales1102-arch.github.io/Huerto-Nativo/especies/murta.jpg'
+                'https://raw.githubusercontent.com/danteretamales1102-arch/Huerto-Nativo/main/especies/coihue.jpg',
+                'https://raw.githubusercontent.com/danteretamales1102-arch/Huerto-Nativo/main/especies/roble-hualle.jpg',
+                'https://raw.githubusercontent.com/danteretamales1102-arch/Huerto-Nativo/main/especies/avellano-chileno.jpg',
+                'https://raw.githubusercontent.com/danteretamales1102-arch/Huerto-Nativo/main/especies/arrayan.jpg',
+                'https://raw.githubusercontent.com/danteretamales1102-arch/Huerto-Nativo/main/especies/maqui.jpg',
+                'https://raw.githubusercontent.com/danteretamales1102-arch/Huerto-Nativo/main/especies/murta.jpg'
             ]
         },
         {
@@ -1299,20 +1412,22 @@ Siguiente en el tiempo<span class="material-symbols-outlined text-sm">arrow_forw
             resultado: 'Recuperación paisajística y ecológica del área intervenida con especies nativas adaptadas a la sequía estival y a la brisa marina del litoral central.',
             especies: ['Peumo', 'Maqui', 'Litre', 'Romerillo', 'Corontillo', 'Molle'],
             fotos: [
-                'https://danteretamales1102-arch.github.io/Huerto-Nativo/proyectos/algarrobo-2.jpg',
-                'https://danteretamales1102-arch.github.io/Huerto-Nativo/proyectos/algarrobo-1.jpg',
-                'https://danteretamales1102-arch.github.io/Huerto-Nativo/proyectos/algarrobo-3.jpg',
-                'https://danteretamales1102-arch.github.io/Huerto-Nativo/proyectos/algarrobo-4.jpg',
-                'https://danteretamales1102-arch.github.io/Huerto-Nativo/proyectos/algarrobo-5.jpg',
-                'https://danteretamales1102-arch.github.io/Huerto-Nativo/proyectos/algarrobo-6.jpg'
+                'https://raw.githubusercontent.com/danteretamales1102-arch/Huerto-Nativo/main/especies/RA.jpg',
+                'https://raw.githubusercontent.com/danteretamales1102-arch/Huerto-Nativo/main/especies/RA1.jpg',
+                'https://raw.githubusercontent.com/danteretamales1102-arch/Huerto-Nativo/main/especies/RA2.jpg',
+                'https://raw.githubusercontent.com/danteretamales1102-arch/Huerto-Nativo/main/especies/RA3.jpg',
+                'https://raw.githubusercontent.com/danteretamales1102-arch/Huerto-Nativo/main/especies/RA4.jpg',
+                'https://raw.githubusercontent.com/danteretamales1102-arch/Huerto-Nativo/main/especies/RA5.jpg',
+                'https://raw.githubusercontent.com/danteretamales1102-arch/Huerto-Nativo/main/especies/RA6.jpg',
+                'https://raw.githubusercontent.com/danteretamales1102-arch/Huerto-Nativo/main/especies/RA7.jpg'
             ],
             fallbacks: [
-                'https://danteretamales1102-arch.github.io/Huerto-Nativo/especies/peumo.jpg',
-                'https://danteretamales1102-arch.github.io/Huerto-Nativo/especies/litre.jpg',
-                'https://danteretamales1102-arch.github.io/Huerto-Nativo/especies/maqui.jpg',
-                'https://danteretamales1102-arch.github.io/Huerto-Nativo/especies/quebracho.jpg',
-                'https://danteretamales1102-arch.github.io/Huerto-Nativo/especies/huingan.jpg',
-                'https://danteretamales1102-arch.github.io/Huerto-Nativo/especies/belloto-del-norte.jpg'
+                'https://raw.githubusercontent.com/danteretamales1102-arch/Huerto-Nativo/main/especies/peumo.jpg',
+                'https://raw.githubusercontent.com/danteretamales1102-arch/Huerto-Nativo/main/especies/litre.jpg',
+                'https://raw.githubusercontent.com/danteretamales1102-arch/Huerto-Nativo/main/especies/maqui.jpg',
+                'https://raw.githubusercontent.com/danteretamales1102-arch/Huerto-Nativo/main/especies/quebracho.jpg',
+                'https://raw.githubusercontent.com/danteretamales1102-arch/Huerto-Nativo/main/especies/huingan.jpg',
+                'https://raw.githubusercontent.com/danteretamales1102-arch/Huerto-Nativo/main/especies/belloto-del-norte.jpg'
             ]
         },
         {
@@ -1329,20 +1444,20 @@ Siguiente en el tiempo<span class="material-symbols-outlined text-sm">arrow_forw
             resultado: 'Durante este 2026 el proyecto continúa en su segunda etapa: el desarrollo de señalética botánica con códigos QR y la implementación del recorrido físico interpretativo para los visitantes.',
             especies: ['Peumo (regeneración natural)', 'Patagua', 'Canelo', 'Arrayán', 'Ginkgo biloba', 'Araucaria de Norfolk', 'Cedro del Himalaya', 'Pino radiata monumental'],
             fotos: [
-                'https://danteretamales1102-arch.github.io/Huerto-Nativo/especies/BR.jpg',
-                'https://danteretamales1102-arch.github.io/Huerto-Nativo/especies/BR1.jpg',
-                'https://danteretamales1102-arch.github.io/Huerto-Nativo/especies/BR2.jpg',
-                'https://danteretamales1102-arch.github.io/Huerto-Nativo/especies/BR3.jpg',
-                'https://danteretamales1102-arch.github.io/Huerto-Nativo/especies/BR4.jpg',
-                'https://danteretamales1102-arch.github.io/Huerto-Nativo/especies/BR5.jpg'
+                'https://raw.githubusercontent.com/danteretamales1102-arch/Huerto-Nativo/main/especies/HB.jpg',
+                'https://raw.githubusercontent.com/danteretamales1102-arch/Huerto-Nativo/main/especies/HB1.jpg',
+                'https://raw.githubusercontent.com/danteretamales1102-arch/Huerto-Nativo/main/especies/HB2.jpg',
+                'https://raw.githubusercontent.com/danteretamales1102-arch/Huerto-Nativo/main/especies/HB3.jpg',
+                'https://raw.githubusercontent.com/danteretamales1102-arch/Huerto-Nativo/main/especies/HB4.jpg',
+                'https://raw.githubusercontent.com/danteretamales1102-arch/Huerto-Nativo/main/especies/HB5.jpg'
             ],
             fallbacks: [
-                'https://danteretamales1102-arch.github.io/Huerto-Nativo/especies/peumo.jpg',
-                'https://danteretamales1102-arch.github.io/Huerto-Nativo/especies/arrayan.jpg',
-                'https://danteretamales1102-arch.github.io/Huerto-Nativo/especies/araucaria.jpg',
-                'https://danteretamales1102-arch.github.io/Huerto-Nativo/especies/belloto-del-norte.jpg',
-                'https://danteretamales1102-arch.github.io/Huerto-Nativo/especies/avellano-chileno.jpg',
-                'https://danteretamales1102-arch.github.io/Huerto-Nativo/especies/coihue.jpg'
+                'https://raw.githubusercontent.com/danteretamales1102-arch/Huerto-Nativo/main/especies/peumo.jpg',
+                'https://raw.githubusercontent.com/danteretamales1102-arch/Huerto-Nativo/main/especies/arrayan.jpg',
+                'https://raw.githubusercontent.com/danteretamales1102-arch/Huerto-Nativo/main/especies/araucaria.jpg',
+                'https://raw.githubusercontent.com/danteretamales1102-arch/Huerto-Nativo/main/especies/belloto-del-norte.jpg',
+                'https://raw.githubusercontent.com/danteretamales1102-arch/Huerto-Nativo/main/especies/avellano-chileno.jpg',
+                'https://raw.githubusercontent.com/danteretamales1102-arch/Huerto-Nativo/main/especies/coihue.jpg'
             ]
         },
         {
@@ -1359,20 +1474,20 @@ Siguiente en el tiempo<span class="material-symbols-outlined text-sm">arrow_forw
             resultado: 'El tronco reutilizado y el sustrato mineral de arena y piedra volcánica local brindan un drenaje y microhábitat ideal para las especies del bosque húmedo.',
             especies: ['Nalca', 'Helecho costilla de vaca', 'Helechos varios colores', 'Michay', 'Chaura', 'Alstroemerias', 'Murta'],
             fotos: [
-                'https://danteretamales1102-arch.github.io/Huerto-Nativo/especies/JN.jpg',
-                'https://danteretamales1102-arch.github.io/Huerto-Nativo/especies/JN1.jpg',
-                'https://danteretamales1102-arch.github.io/Huerto-Nativo/especies/JN2.jpg',
-                'https://danteretamales1102-arch.github.io/Huerto-Nativo/especies/JN3.jpg',
-                'https://danteretamales1102-arch.github.io/Huerto-Nativo/especies/JN4.jpg',
-                'https://danteretamales1102-arch.github.io/Huerto-Nativo/especies/JN5.jpg'
+                'https://raw.githubusercontent.com/danteretamales1102-arch/Huerto-Nativo/main/especies/JN.jpg',
+                'https://raw.githubusercontent.com/danteretamales1102-arch/Huerto-Nativo/main/especies/JN1.jpg',
+                'https://raw.githubusercontent.com/danteretamales1102-arch/Huerto-Nativo/main/especies/JN2.jpg',
+                'https://raw.githubusercontent.com/danteretamales1102-arch/Huerto-Nativo/main/especies/JN3.jpg',
+                'https://raw.githubusercontent.com/danteretamales1102-arch/Huerto-Nativo/main/especies/JN4.jpg',
+                'https://raw.githubusercontent.com/danteretamales1102-arch/Huerto-Nativo/main/especies/JN5.jpg'
             ],
             fallbacks: [
-                'https://danteretamales1102-arch.github.io/Huerto-Nativo/especies/murta.jpg',
-                'https://danteretamales1102-arch.github.io/Huerto-Nativo/especies/arrayan.jpg',
-                'https://danteretamales1102-arch.github.io/Huerto-Nativo/especies/avellano-chileno.jpg',
-                'https://danteretamales1102-arch.github.io/Huerto-Nativo/especies/maqui.jpg',
-                'https://danteretamales1102-arch.github.io/Huerto-Nativo/especies/coihue.jpg',
-                'https://danteretamales1102-arch.github.io/Huerto-Nativo/especies/huilmo.jpg'
+                'https://raw.githubusercontent.com/danteretamales1102-arch/Huerto-Nativo/main/especies/murta.jpg',
+                'https://raw.githubusercontent.com/danteretamales1102-arch/Huerto-Nativo/main/especies/arrayan.jpg',
+                'https://raw.githubusercontent.com/danteretamales1102-arch/Huerto-Nativo/main/especies/avellano-chileno.jpg',
+                'https://raw.githubusercontent.com/danteretamales1102-arch/Huerto-Nativo/main/especies/maqui.jpg',
+                'https://raw.githubusercontent.com/danteretamales1102-arch/Huerto-Nativo/main/especies/coihue.jpg',
+                'https://raw.githubusercontent.com/danteretamales1102-arch/Huerto-Nativo/main/especies/huilmo.jpg'
             ]
         },
         {
@@ -1389,22 +1504,22 @@ Siguiente en el tiempo<span class="material-symbols-outlined text-sm">arrow_forw
             resultado: 'Las OCAs cosechan la escorrentía de lluvia y concentran la humedad en el suelo para impulsar el arraigo de cada núcleo nativo.',
             especies: ['Litre', 'Lobelia', 'Peumo', 'Quillay'],
             fotos: [
-                'https://danteretamales1102-arch.github.io/Huerto-Nativo/especies/CP.jpg',
-                'https://danteretamales1102-arch.github.io/Huerto-Nativo/especies/CP1.jpg',
-                'https://danteretamales1102-arch.github.io/Huerto-Nativo/especies/CP2.jpg',
-                'https://danteretamales1102-arch.github.io/Huerto-Nativo/especies/CP3.jpg',
-                'https://danteretamales1102-arch.github.io/Huerto-Nativo/especies/CP4.jpg',
-                'https://danteretamales1102-arch.github.io/Huerto-Nativo/especies/CP5.jpg',
-                'https://danteretamales1102-arch.github.io/Huerto-Nativo/especies/CP6.jpg'
+                'https://raw.githubusercontent.com/danteretamales1102-arch/Huerto-Nativo/main/especies/CP.jpg',
+                'https://raw.githubusercontent.com/danteretamales1102-arch/Huerto-Nativo/main/especies/CP1.jpg',
+                'https://raw.githubusercontent.com/danteretamales1102-arch/Huerto-Nativo/main/especies/CP2.jpg',
+                'https://raw.githubusercontent.com/danteretamales1102-arch/Huerto-Nativo/main/especies/CP3.jpg',
+                'https://raw.githubusercontent.com/danteretamales1102-arch/Huerto-Nativo/main/especies/CP4.jpg',
+                'https://raw.githubusercontent.com/danteretamales1102-arch/Huerto-Nativo/main/especies/CP5.jpg',
+                'https://raw.githubusercontent.com/danteretamales1102-arch/Huerto-Nativo/main/especies/CP6.jpg'
             ],
             fallbacks: [
-                'https://danteretamales1102-arch.github.io/Huerto-Nativo/especies/quillay.jpg',
-                'https://danteretamales1102-arch.github.io/Huerto-Nativo/especies/litre.jpg',
-                'https://danteretamales1102-arch.github.io/Huerto-Nativo/especies/peumo.jpg',
-                'https://danteretamales1102-arch.github.io/Huerto-Nativo/especies/quebracho.jpg',
-                'https://danteretamales1102-arch.github.io/Huerto-Nativo/especies/huingan.jpg',
-                'https://danteretamales1102-arch.github.io/Huerto-Nativo/especies/maiten.jpg',
-                'https://danteretamales1102-arch.github.io/Huerto-Nativo/especies/maqui.jpg'
+                'https://raw.githubusercontent.com/danteretamales1102-arch/Huerto-Nativo/main/especies/quillay.jpg',
+                'https://raw.githubusercontent.com/danteretamales1102-arch/Huerto-Nativo/main/especies/litre.jpg',
+                'https://raw.githubusercontent.com/danteretamales1102-arch/Huerto-Nativo/main/especies/peumo.jpg',
+                'https://raw.githubusercontent.com/danteretamales1102-arch/Huerto-Nativo/main/especies/quebracho.jpg',
+                'https://raw.githubusercontent.com/danteretamales1102-arch/Huerto-Nativo/main/especies/huingan.jpg',
+                'https://raw.githubusercontent.com/danteretamales1102-arch/Huerto-Nativo/main/especies/maiten.jpg',
+                'https://raw.githubusercontent.com/danteretamales1102-arch/Huerto-Nativo/main/especies/maqui.jpg'
             ]
         }
     ];
@@ -1462,17 +1577,20 @@ Siguiente en el tiempo<span class="material-symbols-outlined text-sm">arrow_forw
         const src = p.fotos[pmSlideIdx];
         const fallback = (p.fallbacks && p.fallbacks[pmSlideIdx]) || FALLBACK_IMG;
 
-        pmSlideImg.style.opacity = '0.35';
+        if (pmCarousel) pmCarousel.classList.remove('sk-done');
         pmSlideImg.removeAttribute('data-orig');
         pmSlideImg.dataset.tried = '';
+        pmSlideImg.onload = function () {
+            if (pmCarousel) pmCarousel.classList.add('sk-done');
+        };
         pmSlideImg.onerror = function () {
             resolveProjectImg(this, fallback);
         };
         pmSlideImg.src = src;
         pmSlideImg.alt = `${p.titulo} — Foto ${pmSlideIdx + 1}`;
-        requestAnimationFrame(() => {
-            pmSlideImg.style.opacity = '1';
-        });
+        if (pmSlideImg.complete && pmSlideImg.naturalWidth > 0 && pmCarousel) {
+            pmCarousel.classList.add('sk-done');
+        }
 
         pmCounter.textContent = `${pmSlideIdx + 1} / ${total}`;
         pmSlotLabel.textContent = `Foto ${pmSlideIdx + 1}`;
@@ -1508,7 +1626,7 @@ Siguiente en el tiempo<span class="material-symbols-outlined text-sm">arrow_forw
 
         pmThumbs.innerHTML = p.fotos.map((foto, i) => {
             const fb = (p.fallbacks && p.fallbacks[i]) || FALLBACK_IMG;
-            return `<button type="button" data-slide="${i}" aria-label="Ver foto ${i + 1}" class="relative h-14 min-w-[60px] rounded-lg overflow-hidden bg-surface-container-high transition-all hover:opacity-100 focus:outline-none">
+            return `<button type="button" data-slide="${i}" aria-label="Ver foto ${i + 1}" class="relative h-14 min-w-[60px] rounded-lg overflow-hidden bg-surface-container-high img-skeleton transition-all hover:opacity-100 focus:outline-none">
                 <img src="${foto}" onerror="resolveProjectImg(this, '${fb}')" alt="${p.titulo} miniatura ${i + 1}" class="w-full h-full object-cover"/>
                 <span class="absolute bottom-0.5 right-1 bg-tarro-nativo/80 text-white text-[9px] font-bold px-1 rounded">${i + 1}</span>
             </button>`;
@@ -1597,54 +1715,99 @@ Siguiente en el tiempo<span class="material-symbols-outlined text-sm">arrow_forw
         });
     });
 
-    /* Animación natural de Línea de Tiempo al avanzar o retroceder con el scroll (deteniéndose en "Hoy") */
+    /* Animación de Línea de Tiempo optimizada (sin reflows en scroll + 1 solo pulso al detenerse) */
     const tlTrackWrap = document.getElementById('tl-track-wrap');
     const tlRail = document.getElementById('tl-rail');
     const tlItems = Array.from(document.querySelectorAll('[data-tl-item]'));
+    const tlNodes = tlItems.map(item => item.querySelector('.tl-node'));
     const tlLineFill = document.getElementById('tl-line-fill');
+    const backToTop = document.getElementById('back-to-top');
+    const heroImg = document.getElementById('hero-img');
+
+    let tlNodeOffsets = [];
+    let tlItemOffsets = [];
+    let tlRailStartOffset = 28;
+    let tlRailTotalHeight = 1;
+    let tlViewportH = window.innerHeight || 800;
+    let tlCurrentActiveIdx = 0;
+    let tlLastPulsedIdx = -1;
+    let tlSettleTimer = null;
+
+    function cacheTimelineMetrics() {
+        if (!tlTrackWrap || !tlItems.length) return;
+        tlViewportH = window.innerHeight || document.documentElement.clientHeight || 800;
+        const wrapRect = tlTrackWrap.getBoundingClientRect();
+        tlItemOffsets = tlItems.map(item => item.getBoundingClientRect().top - wrapRect.top);
+        tlNodeOffsets = tlNodes.map((node, i) => {
+            if (!node) return tlItemOffsets[i] + 36;
+            const r = node.getBoundingClientRect();
+            return (r.top - wrapRect.top) + r.height / 2;
+        });
+        tlRailStartOffset = tlNodeOffsets[0] || 28;
+        const lastOffset = tlNodeOffsets[tlNodeOffsets.length - 1] || (wrapRect.height - 40);
+        tlRailTotalHeight = Math.max(1, lastOffset - tlRailStartOffset);
+        if (tlRail) {
+            tlRail.style.top = `${tlRailStartOffset}px`;
+            tlRail.style.height = `${tlRailTotalHeight}px`;
+        }
+    }
 
     function setActiveTimelineStep(idx) {
+        tlCurrentActiveIdx = idx;
         tlItems.forEach((item, i) => {
             item.classList.toggle('tl-current', i === idx);
         });
     }
 
+    function pulseSettledNode() {
+        if (tlCurrentActiveIdx === tlLastPulsedIdx) return;
+        tlLastPulsedIdx = tlCurrentActiveIdx;
+        tlNodes.forEach((node, i) => {
+            if (!node) return;
+            node.classList.remove('tl-pulse-once');
+            if (i === tlCurrentActiveIdx) {
+                void node.offsetWidth;
+                node.classList.add('tl-pulse-once');
+            }
+        });
+    }
+
     function updateTimelineOnScroll() {
+        const sy = window.scrollY || window.pageYOffset;
+        if (heroImg && sy <= 800) {
+            heroImg.style.transform = `translate3d(0, ${(sy * 0.065).toFixed(1)}px, 0)`;
+        }
+        if (backToTop) backToTop.classList.toggle('show', sy > 600);
         if (!tlTrackWrap || !tlItems.length) return;
-        const wrapRect = tlTrackWrap.getBoundingClientRect();
-        const firstNode = tlItems[0].querySelector('.tl-node');
-        const lastNode = tlItems[tlItems.length - 1].querySelector('.tl-node');
-        const vh = window.innerHeight || document.documentElement.clientHeight;
-        const triggerY = vh * 0.58;
 
-        if (firstNode && lastNode && tlRail) {
-            const firstCenterY = firstNode.getBoundingClientRect().top + firstNode.offsetHeight / 2;
-            const lastCenterY = lastNode.getBoundingClientRect().top + lastNode.offsetHeight / 2;
-            const railTop = Math.max(0, firstCenterY - wrapRect.top);
-            const railHeight = Math.max(1, lastCenterY - firstCenterY);
-            tlRail.style.top = `${railTop}px`;
-            tlRail.style.height = `${railHeight}px`;
+        const wrapTop = tlTrackWrap.getBoundingClientRect().top;
+        const triggerY = tlViewportH * 0.58;
+        const firstCenterY = wrapTop + tlRailStartOffset;
+        const rawProgress = (triggerY - firstCenterY) / tlRailTotalHeight;
+        const clampedProgress = Math.max(0, Math.min(1, rawProgress));
 
-            const rawProgress = ((triggerY - firstCenterY) / railHeight) * 100;
-            const clampedProgress = Math.max(0, Math.min(100, rawProgress));
-            if (tlLineFill) tlLineFill.style.height = `${clampedProgress}%`;
+        if (tlLineFill) {
+            tlLineFill.style.transform = `scaleY(${clampedProgress.toFixed(4)})`;
         }
 
-        let currentIdx = -1;
-        tlItems.forEach((item, i) => {
-            const node = item.querySelector('.tl-node');
-            const nodeY = node ? (node.getBoundingClientRect().top + node.offsetHeight / 2) : (item.getBoundingClientRect().top + 40);
-            const isVisible = item.getBoundingClientRect().top < vh * 0.88;
+        let currentIdx = 0;
+        const revealY = tlViewportH * 0.88;
+        for (let i = 0; i < tlItems.length; i++) {
+            const itemTop = wrapTop + tlItemOffsets[i];
+            const nodeY = wrapTop + tlNodeOffsets[i];
+            const isVisible = itemTop < revealY || i === 0;
             const isPassed = nodeY <= triggerY;
-            item.classList.toggle('tl-visible', isVisible || i === 0);
-            item.classList.toggle('tl-passed', isPassed);
+            tlItems[i].classList.toggle('tl-visible', isVisible);
+            tlItems[i].classList.toggle('tl-passed', isPassed);
             if (isPassed) currentIdx = i;
-        });
+        }
 
-        if (currentIdx === -1) currentIdx = 0;
-        tlItems.forEach((item, i) => {
-            item.classList.toggle('tl-current', i === currentIdx);
-        });
+        if (currentIdx !== tlCurrentActiveIdx) {
+            setActiveTimelineStep(currentIdx);
+        }
+
+        clearTimeout(tlSettleTimer);
+        tlSettleTimer = setTimeout(pulseSettledNode, 160);
     }
 
     let tlScrollTicking = false;
@@ -1657,11 +1820,25 @@ Siguiente en el tiempo<span class="material-symbols-outlined text-sm">arrow_forw
             tlScrollTicking = true;
         }
     }, { passive: true });
-    window.addEventListener('resize', updateTimelineOnScroll, { passive: true });
+
+    window.addEventListener('resize', () => {
+        cacheTimelineMetrics();
+        updateTimelineOnScroll();
+    }, { passive: true });
+    window.addEventListener('load', () => {
+        cacheTimelineMetrics();
+        updateTimelineOnScroll();
+    }, { once: true });
+
+    if (backToTop) {
+        backToTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+    }
+
+    cacheTimelineMetrics();
     updateTimelineOnScroll();
 
     /* Reveal */
-    const revealTargets = document.querySelectorAll('main section');
+    const revealTargets = document.querySelectorAll('main > section');
     if ('IntersectionObserver' in window) {
         revealTargets.forEach((el, i) => { if (i > 0) el.classList.add('reveal'); });
         const revealObs = new IntersectionObserver((entries) => {
@@ -1671,7 +1848,7 @@ Siguiente en el tiempo<span class="material-symbols-outlined text-sm">arrow_forw
                     revealObs.unobserve(entry.target);
                 }
             });
-        }, { threshold: 0.08 });
+        }, { threshold: 0.06 });
         revealTargets.forEach(el => revealObs.observe(el));
     }
 
@@ -1690,36 +1867,6 @@ Siguiente en el tiempo<span class="material-symbols-outlined text-sm">arrow_forw
             });
         }, { rootMargin: '-40% 0px -55% 0px' });
         Object.values(sectionsById).forEach(sec => navObs.observe(sec));
-    }
-
-    /* Volver Arriba */
-    const backToTop = document.getElementById('back-to-top');
-    window.addEventListener('scroll', () => {
-        backToTop.classList.toggle('show', window.scrollY > 600);
-    }, { passive: true });
-    backToTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
-
-    /* Contadores */
-    const counters = document.querySelectorAll('[data-count]');
-    if ('IntersectionObserver' in window && counters.length) {
-        const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-        const countObs = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (!entry.isIntersecting) return;
-                const el = entry.target;
-                const target = +el.dataset.count;
-                countObs.unobserve(el);
-                if (reduceMotion) { el.textContent = target; return; }
-                const dur = 1200, t0 = performance.now();
-                const tick = (t) => {
-                    const p = Math.min(1, (t - t0) / dur);
-                    el.textContent = Math.round(target * (1 - Math.pow(1 - p, 3)));
-                    if (p < 1) requestAnimationFrame(tick);
-                };
-                requestAnimationFrame(tick);
-            });
-        }, { threshold: 0.6 });
-        counters.forEach(el => countObs.observe(el));
     }
 
     /* FUNCIONES DEL CARRITO */
@@ -1907,6 +2054,27 @@ Siguiente en el tiempo<span class="material-symbols-outlined text-sm">arrow_forw
             t.classList.add('opacity-0', 'pointer-events-none');
         }, 2500);
     }
+
+    /* Activación ligera de esqueletos de imagen: apaga la animación apenas cada foto termina de cargar */
+    function bindSkeletonImages(root) {
+        (root || document).querySelectorAll('.img-skeleton > img').forEach(img => {
+            const done = () => {
+                if (img.parentElement) img.parentElement.classList.add('sk-done');
+            };
+            if (img.complete && img.naturalWidth > 0) {
+                done();
+            } else {
+                img.addEventListener('load', done, { once: true });
+            }
+        });
+    }
+    bindSkeletonImages(document);
+
+    const origPopulateModal = populateProyectoModal;
+    populateProyectoModal = function (idx) {
+        origPopulateModal(idx);
+        bindSkeletonImages(pmThumbs);
+    };
 
     updateCartBadge();
     updatePack();
